@@ -1,6 +1,6 @@
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ChosenTheme } from '@/providers'
-import { AppBar, Toolbar } from '@mui/material'
+import { AppBar, Toolbar, useMediaQuery } from '@mui/material'
 import * as AiIcons from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 
@@ -9,26 +9,43 @@ import DarkModeToggle from './DarkModeToggle'
 import { All } from './style'
 
 const Header = () => {
-  const { theme } = useContext(ChosenTheme)
+    const { theme } = useContext(ChosenTheme),
+        [isLogged, setIsLogged] = useState(false),
+        [userName, setUserName] = useState<string | null>(),
+        isMobile = useMediaQuery('(max-width: 450px)')
 
-  return (
-    <All
-      theme={theme}
-    >
-      <div className='left'>
-        <img src={icon} />
-      </div>
-      <div className='right'>
-        <Link to='/login'>
-          <AiIcons.AiOutlineUser className='icon' />
-          <p className="login">Olá, <strong> Marcelin!</strong></p>
-        </Link>
-        <Toolbar variant='dense'>
-          <DarkModeToggle />
-        </Toolbar>
-      </div>
-    </All>
-  )
+    useEffect(() => {
+        let haveUser = localStorage.getItem('Tsurus@user')
+        if (haveUser) {
+            setIsLogged(true)
+            setUserName(JSON.parse(haveUser))
+        }
+    }, [])
+
+    return (
+        <All
+          theme={theme}
+        >
+            <div className='left'>
+                <img src={icon} />
+            </div>
+            <div className='right'>
+                <Link to={isLogged ? '/user' : '/login'}>
+                    <AiIcons.AiOutlineUser className='icon' />
+                    {!isMobile && <>
+                        {isLogged ? 
+                            <p className="login">Olá, <strong> {userName || 'Usuário'}</strong></p>
+                        :
+                            <p className="login sublimed">Login</p>
+                        }
+                    </>}
+                </Link>
+                <Toolbar variant='dense' title='Muda de tema escuro para claro'>
+                    <DarkModeToggle />
+                </Toolbar>
+            </div>
+        </All>
+    )
 }
 
 export default Header

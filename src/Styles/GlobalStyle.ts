@@ -21,6 +21,8 @@ export const GlobalStyle = createGlobalStyle`
         color: #c7c7c7;
         overflow-x: hidden;
         overflow-y: auto !important;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
         div#__next{
             min-height: 100vh;
         }

@@ -6,12 +6,13 @@ export const All = styled.header<{ theme: string }>`
     left: 0;
     width: 100vw;
     height: 70px;
-    background-color: ${props => props.theme === 'dark' ? '#185a9e' : '#55a9ff'};
+    background-image: ${({theme}) => theme === 'dark' ? 'linear-gradient(-90deg, #185a9e, #11467d)' : 'linear-gradient(-90deg, #55a9ff, #3480cf)'};
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
     div.left{
+        height: 60px;
         img{
             object-fit: contain;
             height: 60px;
@@ -35,6 +36,11 @@ export const All = styled.header<{ theme: string }>`
             margin-left: 5px;
             strong{
                 margin-left:2.5px;
+            }
+            &.sublimed{
+                text-decoration: underline;
+                font-weight: bolder;
+                font-family: 'Rubik', sans-serif;
             }
         }
     }
