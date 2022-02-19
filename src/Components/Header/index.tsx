@@ -1,9 +1,8 @@
-import { FC } from 'react'
 import { AppBar, Toolbar } from '@mui/material'
 
 import DarkModeToggle from './DarkModeToggle'
 
-const Header: FC = () => {
+const Header = () => {
   return (
     <AppBar position='fixed'>
       <Toolbar variant='dense'>

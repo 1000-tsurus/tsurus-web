@@ -1,37 +1,33 @@
-import { FC } from 'react'
-import { Link, Slider, styled } from '@mui/material'
+import { useContext } from 'react'
+import styled from 'styled-components'
+import { Route, Routes } from 'react-router-dom'
 
 import Header from '@/Components/Header'
+import { GlobalStyle } from './Styles/GlobalStyle'
+import { ChosenTheme } from './providers'
+import Home from './Pages/Home/Home'
+import Login from './Pages/Login/Login'
 
-const App: FC = () => {
-  return (
-    <Root>
-      <Header />
-      <div>
-        <h2>
-          How much do you like{' '}
-          <Link href='https://vitejs.dev/' target='_blank' rel='noopener noreferrer'>
-            Vite?
-          </Link>
-        </h2>
-        <Slider />
-      </div>
-    </Root>
-  )
-}
-
-const Root = styled('div')`
-  padding: 1% 2% 10vh 2%;
-  width: 100%;
-  min-height: 95vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  & a {
-    text-decoration: none;
-    color: ${({ theme: { palette } }) => palette.primary.main};
-  }
+const Root = styled.div<{theme: 'dark' | 'light'}>`
+    padding-top: 50px;
+    & a {
+        text-decoration: none;
+        color: ${({ theme }) => theme === 'dark' ? '#ffffffcc' : '#000'};
+    }
 `
+
+const App = () => {
+    let { theme } = useContext(ChosenTheme)
+    return (
+        <Root theme={theme}>
+            <Header />
+                <Routes>
+                    <Route path="/" element={<Home />}/>
+                    <Route path="/login" element={<Login />}/>
+                </Routes>
+            <GlobalStyle />
+        </Root>
+    )
+}
 
 export default App

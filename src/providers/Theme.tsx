@@ -16,7 +16,7 @@ export const ThemeProvider: FC = ({ children }) => {
   )
 }
 
-const brandColor = '#00b8d4'
+const brandColor = '#55a9ff'
 const createThemeHelper = (theme: 'dark' | 'light') => {
   const isDark = theme === 'dark'
   return createTheme({
@@ -24,7 +24,7 @@ const createThemeHelper = (theme: 'dark' | 'light') => {
       mode: theme,
       background: {
         default: isDark ? '#303030;' : '#f0f0f0',
-        paper: isDark ? '#242526' : '#ffffff'
+        paper: isDark ? '#242526' : '#f0f0f0'
       },
       primary: {
         main: brandColor

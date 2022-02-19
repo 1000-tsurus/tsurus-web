@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react'
+import { useContext } from 'react'
 import DarkModeIcon from '@mui/icons-material/Brightness3'
 import LightModeIcon from '@mui/icons-material/WbSunny'
 
@@ -12,7 +12,7 @@ import {
     SunIcon 
 } from './style'
 
-const DarkModeToggle: FC = () => {
+const DarkModeToggle = () => {
     const { theme, setTheme } = useContext(ChosenTheme)
     return (
         <Root>
@@ -36,9 +36,6 @@ const DarkModeToggle: FC = () => {
             </Label>
         </Root>
     )
-}
-interface BallProps {
-    isChecked: boolean
 }
 
 export default DarkModeToggle
