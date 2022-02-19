@@ -1,5 +1,37 @@
 import styled from "styled-components"
 
+export const All = styled.header<{theme: string}>`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 70px;
+    background-color: ${props => props.theme === 'dark' ? '#185a9e' : '#55a9ff'};
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    div.left{
+        img{
+            object-fit: contain;
+            height: 60px;
+        }
+    }
+    div.right{
+        display: flex;
+        align-items: center;
+        a{
+            display: grid;
+            place-items: center;
+        }
+        svg.icon{
+            border-radius: 50%;
+            border: 2px solid ${props => props.theme === 'dark' ? '#fff' : '#000'};
+            font-size: 2rem;
+        }
+    }
+`;
+
 export const Checkbox = styled.input`
     opacity: 0;
     position: absolute;

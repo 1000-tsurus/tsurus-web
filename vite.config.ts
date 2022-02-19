@@ -1,5 +1,4 @@
 import react from '@vitejs/plugin-react'
-import Checker from 'vite-plugin-checker'
 import { resolve } from 'path'
 import { UserConfig } from 'vite'
 import { visualizer } from 'rollup-plugin-visualizer'
@@ -26,15 +25,7 @@ const config: UserConfig = {
     sourcemap: !!shouldAnalyze
   },
   plugins: [
-    react(),
-    Checker({
-      typescript: true,
-      overlay: true,
-      eslint: {
-        files: 'src',
-        extensions: ['.ts', '.tsx']
-      }
-    })
+    react()
   ]
 }
 
