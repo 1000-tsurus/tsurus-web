@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-export const All = styled.header<{theme: string}>`
+export const All = styled.header<{ theme: string }>`
     position: fixed;
     top: 0;
     left: 0;
@@ -21,13 +21,21 @@ export const All = styled.header<{theme: string}>`
         display: flex;
         align-items: center;
         a{
-            display: grid;
-            place-items: center;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
         }
         svg.icon{
             border-radius: 50%;
             border: 2px solid ${props => props.theme === 'dark' ? '#fff' : '#000'};
             font-size: 2rem;
+        }
+        p.login{
+            display: flex;
+            margin-left: 5px;
+            strong{
+                margin-left:2.5px;
+            }
         }
     }
 `;
@@ -37,7 +45,7 @@ export const Checkbox = styled.input`
     position: absolute;
 `
 
-export const Ball = styled.div<{isChecked?: boolean}>`
+export const Ball = styled.div<{ isChecked?: boolean }>`
     background-color: #fff;
     border-radius: 50%;
     position: absolute;
