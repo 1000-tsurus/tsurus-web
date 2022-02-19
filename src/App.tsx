@@ -21,10 +21,12 @@ const App = () => {
     return (
         <Root theme={theme}>
             <Header />
-                <Routes>
-                    <Route path="/" element={<Home />}/>
-                    <Route path="/login" element={<Login />}/>
-                </Routes>
+                <div style={{marginTop:'20px'}}>
+                    <Routes>
+                        <Route path="/" element={<Home />}/>
+                        <Route path="/login" element={<Login />}/>
+                    </Routes>
+                </div>
             <GlobalStyle />
         </Root>
     )
