@@ -6,7 +6,7 @@ export const ChosenTheme = createContext<IChosenTheme>({} as IChosenTheme)
 
 export const ChosenThemeProvider: FC = ({ children }) => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
-  const [theme, setTheme] = useLocalStorage<ThemeName>('theme', prefersDarkMode ? 'dark' : 'light', true)
+  const [theme, setTheme] = useLocalStorage<ThemeName>('Tsurus@theme', prefersDarkMode ? 'dark' : 'light', true)
 
   return <ChosenTheme.Provider value={{ theme, setTheme }}>{children}</ChosenTheme.Provider>
 }
