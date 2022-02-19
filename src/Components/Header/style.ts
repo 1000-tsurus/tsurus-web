@@ -11,6 +11,8 @@ export const All = styled.header<{ theme: string }>`
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
+    -webkit-box-shadow: 0px 5px 25px -5px rgba(0,0,0,0.2); 
+    box-shadow: 0px 5px 25px -5px rgba(0,0,0,0.2);
     div.left{
         img{
             object-fit: contain;
