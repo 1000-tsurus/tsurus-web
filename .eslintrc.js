@@ -8,4 +8,5 @@ module.exports = {
         "@typescript-eslint/indent": ["error", 4],
         "@typescript-eslint/semi": "off",
         "semi": ["error", "always"]
-}
+    }
+};
