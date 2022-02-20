@@ -6,13 +6,14 @@ export const All = styled.header<{ theme: string }>`
     left: 0;
     width: 100vw;
     height: 70px;
-    background-image: ${({theme}) => theme === 'dark' ? 'linear-gradient(-90deg, #185a9e, #11467d)' : 'linear-gradient(-90deg, #55a9ff, #3480cf)'};
+    background-image: ${({ theme }) => theme === 'dark' ? 'linear-gradient(-90deg, #185a9e, #11467d)' : 'linear-gradient(-90deg, #55a9ff, #3480cf)'};
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
     -webkit-box-shadow: 0px 5px 25px -5px rgba(0,0,0,0.2); 
     box-shadow: 0px 5px 25px -5px rgba(0,0,0,0.2);
+    z-index: 1000;
     div.left{
         height: 60px;
         img{

@@ -24,18 +24,18 @@ const Header = () => {
 
     return (
         <All
-          theme={theme}
+            theme={theme}
         >
             <div className='left'>
-                <img src={icon} />
+                <Link to='/home'><img src={icon} /></Link>
             </div>
             <div className='right'>
                 <Link to={isLogged ? '/user' : '/login'}>
                     <AiIcons.AiOutlineUser className='icon' />
                     {!isMobile && <>
-                        {isLogged ? 
+                        {isLogged ?
                             <p className="login">Olá, <strong> {userName || 'Usuário'}</strong></p>
-                        :
+                            :
                             <p className="login sublimed">Login</p>
                         }
                     </>}

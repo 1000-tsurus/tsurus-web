@@ -7,8 +7,11 @@ import { GlobalStyle } from './Styles/GlobalStyle'
 import { ChosenTheme } from './providers'
 import Home from './Pages/Home/Home'
 import Login from './Pages/Login/Login'
+import Register from './Pages/Register/Register'
+import User from './Pages/Home/User/User'
+import Footer from './Components/Footer/Footer'
 
-const Root = styled.div<{theme: 'dark' | 'light'}>`
+const Root = styled.div<{ theme: 'dark' | 'light' }>`
     padding-top: 50px;
     & a {
         text-decoration: none;
@@ -21,12 +24,22 @@ const App = () => {
     return (
         <Root theme={theme}>
             <Header />
-            <div style={{marginTop:'20px'}}>
+            <div
+                style={{
+                    marginTop: '20px',
+                    minHeight: 'calc(100vh - 60px)'
+                }}
+            >
                 <Routes>
-                    <Route path="/" element={<Home />}/>
-                    <Route path="/login" element={<Login />}/>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/user" element={<User />} />
+                    <Route path="/user/:id" element={<User />} />
                 </Routes>
             </div>
+            <Footer />
             <GlobalStyle />
         </Root>
     )
