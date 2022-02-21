@@ -5,6 +5,7 @@ import { All } from './style';
 import imgCarousel1 from '../../Assets/img/imgCarousel1.png'
 import imgCarousel2 from '../../Assets/img/imgCarousel2.png'
 import imgCarousel3 from '../../Assets/img/imgCarousel3.png'
+import { Link } from 'react-router-dom';
 
 export default function Landing() {
   return (
@@ -31,7 +32,7 @@ export default function Landing() {
             backgroundImage: `url(${imgCarousel3})`
           }}>
             <div>
-              <h1 className="title">Cadastre-se já!</h1>
+              <Link to="/register"><h1 className="title"><strong>Cadastre-se</strong> já!</h1></Link>
               <p>Está interessado em ser mentor pela Mil Tsurus?</p>
             </div>
           </div>

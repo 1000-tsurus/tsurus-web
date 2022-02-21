@@ -1,3 +1,5 @@
 import styled from 'styled-components';
 
-export const All = styled.div``;
+export const All = styled.div`
+
+`;

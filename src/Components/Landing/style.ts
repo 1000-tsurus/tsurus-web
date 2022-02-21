@@ -16,6 +16,9 @@ export const All = styled.div`
       h1.title{
         font-family: 'Rubik', sans-serif;
         font-weight: bolder;
+        strong{
+          text-decoration: underline;
+        }
       }
     }
   }
