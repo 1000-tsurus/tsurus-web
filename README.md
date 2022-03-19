@@ -1,35 +1,34 @@
-# React + TypeScript + MUI
+## Tecnologias usadas:
+- React + typescript (TSX)
+- Material Ui
+- Styled-Components
+- Axios (HTTP requests)
 
-A Vite template for React, TypeScript and the latest major version of MUI.
 
-## Highlights
+## Começando
 
-- React w/ TypeScript
-- Takes 8-10 seconds to build prod bundle at 198kb
-- v5 ( latest ) version of Material UI, `@mui/material`
-- Enables the `@emotion/babel-plugin` to work with MUI (see [features](https://github.com/emotion-js/emotion/tree/main/packages/babel-plugin#features))
-- Dark mode toggle
-- Aliased imports
+- Clone o repostório.
+- Rode `npm install` no seu terminal de preferência.
+- Após a instalação concluida, rode `npm run dev`.
 
-## Demo
 
-<img src='./screen-shots/demo.png' />
+### Oque está incluso
 
-## Getting Started
+- Tema customzado
+- Utilização do tema dentro do **`styled` component**
+- Modo escuro utilizando **React Context**
+- Login e Auth
+- Scss
+- Single-page-application
 
-- Clone the repo, `git clone https://github.com/christopher-caldwell/vite-material-ui.git`, or use the "Use this template" button at the top of this page.
-- Install dependencies using `yarn`
-- Start the server with `yarn dev`
+## Sobre o projeto
 
-## MUI
+A 1000 tsurus é um projeto social sem fins lucrativos feito em parceria com a Faculdade Positivo. Código de autoria de:
 
-To learn more about the newest ways to use MUI, checkout [the docs](https://mui.com/getting-started/usage/).
+    Guilherme Iuri de Barros - https://www.linkedin.com/in/guilherme-iuri-de-barros
+    José sanches malassise - https://www.linkedin.com/in/jos%C3%A9-malassise-353380227/
+##    
 
-### What's Included
 
-- Custom theming
-- Using that theme from within a `styled` component
-- Dark mode toggle with React Context
-- Aliased imports with `@/` mapping to the `src/`
-- Rollup bundle analyzer
-  - To use, run `yarn analyze`
+
+* *O código contém direitos autorais, e o uso dele e/ou de quaisquer conteúdos relacionados à 1000 Tsurus sem permissão será submetida a fins judiciais.*
