@@ -11,7 +11,7 @@ export default function Footer() {
   return (
     <All theme={theme}>
       <div className="left-container">
-        <img src={icon} alt="ícone Mil Tsurus"></img>
+        {/* <img src={icon} alt="ícone Mil Tsurus"></img> */}
       </div>
       <div className="right-container">
         <p className='title'>Aplicação feita por:</p>

@@ -1,15 +1,14 @@
 import Landing from '@/Components/Landing/Landing'
 import React from 'react'
-import Card from '@/Components/Card/Card'
+import Card from '@/Components/MentorCard/MentorCard'
+import MentorList from '@/Components/MentorList/MentorList'
+import { All } from './style'
 
 export default function Home() {
     return (
-        <>
+        <All>
             <Landing />
-            <div className="mentors">
-                <h2>Escolha seu mentor:</h2>
-            </div>
-            <Card />
-        </>
+            <MentorList/>
+        </All>
     )
 }
