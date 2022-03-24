@@ -45,6 +45,7 @@ export const All = styled.div`
     border-radius: 1rem;
     box-shadow: 0 .3rem .5rem rgba(0, 0, 0, .2);
     text-align: center;
+    transition:0.2s linear;
   }
 
   .card-container .card:hover{
