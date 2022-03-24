@@ -8,8 +8,9 @@ import { ChosenTheme } from './providers'
 import Home from './Pages/Home/Home'
 import Login from './Pages/Login/Login'
 import Register from './Pages/Register/Register'
-import User from './Pages/Home/User/User'
+import User from './Pages/User/User'
 import Footer from './Components/Footer/Footer'
+import { ToastContainer } from 'react-toastify'
 
 const Root = styled.div<{ theme: 'dark' | 'light' }>`
     padding-top: 50px;
@@ -40,6 +41,7 @@ const App = () => {
                 </Routes>
             </div>
             <Footer />
+            <ToastContainer/>
             <GlobalStyle />
         </Root>
     )

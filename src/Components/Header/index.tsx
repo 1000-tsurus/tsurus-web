@@ -27,7 +27,7 @@ const Header = () => {
             theme={theme}
         >
             <div className='left'>
-                <Link to='/home'><img src={icon} /></Link>
+                {/* <Link to='/home'><img src={icon} /></Link> */}
             </div>
             <div className='right'>
                 <Link to={isLogged ? '/user' : '/login'}>
