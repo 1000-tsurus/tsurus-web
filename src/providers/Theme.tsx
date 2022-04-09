@@ -17,7 +17,7 @@ export const ThemeContextProvider = ({ children }: Props) => {
     const [selectedTheme, setSelectedTheme] = useState<DefaultTheme>(lightTheme)
 
     useLayoutEffect(() => {
-        const savedTheme = localStorage.getItem('@Theme')
+        const savedTheme = localStorage.getItem('Tsurus@theme')
 
         if (savedTheme) {
             setSelectedTheme(savedTheme === 'light' ? lightTheme : darkTheme)
@@ -39,12 +39,11 @@ export const ThemeContextProvider = ({ children }: Props) => {
     )
 }
 
-// Custom hook para alterar o tema e verificar o atual
 export const useToggleTheme = (): ThemeContextData => {
     const context = useContext(ThemeContext)
 
     if (!context) {
-        throw new Error('O Hook useToggleTheme deve ser usado dentro de um ThemeContextProvider!!')
+        throw new Error('DEV: Hook useToggleTheme deve ser usado dentro do ThemeContextProvider!')
     }
 
     return context
