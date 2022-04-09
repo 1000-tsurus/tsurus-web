@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom'
 
 import Header from '@/Components/Header'
 import { GlobalStyle } from './Styles/GlobalStyle'
-import { ChosenTheme } from './providers'
+import { ThemeContext } from './providers/Theme'
 import Home from './Pages/Home/Home'
 import Login from './Pages/Login/Login'
 import Register from './Pages/Register/Register'
@@ -12,18 +12,17 @@ import User from './Pages/User/User'
 import Footer from './Components/Footer/Footer'
 import { ToastContainer } from 'react-toastify'
 
-const Root = styled.div<{ theme: 'dark' | 'light' }>`
+const Root = styled.div`
     padding-top: 50px;
     & a {
         text-decoration: none;
-        color: ${({ theme }) => theme === 'dark' ? '#ffffffcc' : '#000'};
+        color: ${({ theme }) => theme.title === 'dark' ? '#ffffffcc' : '#000'};
     }
 `
 
 const App = () => {
-    let { theme } = useContext(ChosenTheme)
     return (
-        <Root theme={theme}>
+        <Root>
             <Header />
             <div
                 style={{

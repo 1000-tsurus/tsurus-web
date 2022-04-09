@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
-export const All = styled.div<{ theme: string }>`
+export const All = styled.div`
     width: 95%;
     height: 350px;
-    background-color: ${({ theme }) => theme === 'dark' ? 'rgba(70, 70, 70)' : 'rgba(70, 70, 70)'}; 
+    background-color: ${({ theme }) => theme.colors.destaque};
+    color: ${({ theme }) => theme.colors.text};
     border-radius: 25px;
     transition: all .2s ease-in-out;
     -webkit-box-shadow: 0px 14px 33px -11px rgba(0,0,0,0.2); 
@@ -35,7 +36,7 @@ export const All = styled.div<{ theme: string }>`
             width: 100%;
             h1{
                 font-family: 'Montserrat', sans-serif;
-                font-weight: bolder;
+                font-weight: 700;
                 margin-bottom: 10px;
             }
             div.infos{
@@ -51,7 +52,7 @@ export const All = styled.div<{ theme: string }>`
                     justify-content: flex-start;
                     h3{
                         font-family: 'Montserrat', sans-serif;
-                        font-weight: lighter;
+                        font-weight: 400;
                     }
                     div.skills{
                         display: flex;

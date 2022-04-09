@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { ChosenTheme } from '@/providers'
+import { ThemeContext } from '@/providers/Theme'
 import { AppBar, Toolbar, useMediaQuery } from '@mui/material'
 import * as AiIcons from 'react-icons/ai'
 import { Link } from 'react-router-dom'
@@ -9,8 +9,7 @@ import DarkModeToggle from './DarkModeToggle'
 import { All } from './style'
 
 const Header = () => {
-    const { theme } = useContext(ChosenTheme),
-        [isLogged, setIsLogged] = useState(false),
+    const [isLogged, setIsLogged] = useState(false),
         [userName, setUserName] = useState<string | null>(),
         isMobile = useMediaQuery('(max-width: 450px)')
 
@@ -23,9 +22,7 @@ const Header = () => {
     }, [])
 
     return (
-        <All
-            theme={theme}
-        >
+        <All>
             <div className='left'>
                 {/* <Link to='/home'><img src={icon} /></Link> */}
             </div>

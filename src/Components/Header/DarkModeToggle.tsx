@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import DarkModeIcon from '@mui/icons-material/Brightness3'
 import LightModeIcon from '@mui/icons-material/WbSunny'
 
-import { ChosenTheme } from '@/providers'
+import { ThemeContext } from '@/providers'
 import { 
     Ball, 
     Checkbox, 
@@ -13,16 +13,16 @@ import {
 } from './style'
 
 const DarkModeToggle = () => {
-    const { theme, setTheme } = useContext(ChosenTheme)
+    const { selectedTheme, toggleTheme } = useContext(ThemeContext)
     return (
         <Root>
             <Checkbox
                 type='checkbox'
                 id='dark-mode-toggle'
-                checked={theme === 'dark'}
+                checked={selectedTheme.title === 'dark'}
                 onChange={({ target: { checked } }) => {
                     const themeToSet = checked ? 'dark' : 'light'
-                    setTheme(themeToSet)
+                    toggleTheme(themeToSet)
                 }}
             />
             <Label htmlFor='dark-mode-toggle'>
@@ -32,7 +32,7 @@ const DarkModeToggle = () => {
                 <SunIcon>
                     <LightModeIcon color='inherit' fontSize='small' />
                 </SunIcon>
-                <Ball isChecked={theme === 'dark'} />
+                <Ball isChecked={selectedTheme.title === 'dark'} />
             </Label>
         </Root>
     )

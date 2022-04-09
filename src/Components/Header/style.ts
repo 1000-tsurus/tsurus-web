@@ -1,12 +1,12 @@
 import styled from "styled-components"
 
-export const All = styled.header<{ theme: string }>`
+export const All = styled.header`
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 70px;
-    background-image: ${({ theme }) => theme === 'dark' ? 'linear-gradient(-90deg, #185a9e, #11467d)' : 'linear-gradient(-90deg, #55a9ff, #3480cf)'};
+    background-image: ${({ theme }) => theme.title === 'dark' ? 'linear-gradient(-90deg, #185a9e, #11467d)' : 'linear-gradient(-90deg, #55a9ff, #3480cf)'};
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,7 +31,7 @@ export const All = styled.header<{ theme: string }>`
         }
         svg.icon{
             border-radius: 50%;
-            border: 2px solid ${props => props.theme === 'dark' ? '#fff' : '#000'};
+            border: 2px solid ${({ theme }) => theme.title === 'dark' ? '#fff' : '#000'};
             font-size: 2rem;
         }
         p.login{

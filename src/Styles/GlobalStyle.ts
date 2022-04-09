@@ -22,6 +22,7 @@ export const GlobalStyle = createGlobalStyle`
         overflow-y: auto !important;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        background-color: ${({ theme }) => theme.colors.background};
         div#__next{
             min-height: 100vh;
         }

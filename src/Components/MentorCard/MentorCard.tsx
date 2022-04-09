@@ -1,13 +1,12 @@
 import React, { useContext } from 'react'
 import { All } from './style';
 import pictureProfile from '../../Assets/img/profile-picture-card.jpg'
-import { ChosenTheme } from '@/providers';
+import { ThemeContext } from '@/providers';
 import { Link } from 'react-router-dom';
 
 export default function Card({user}: any) {
-    const { theme } = useContext(ChosenTheme)
     return (
-        <All theme={theme}>
+        <All>
             <div className="card">
                 <img src={user.icon_url ?? 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/1024px-User-avatar.svg.png'} alt='Foto de perfil do mentor'></img>
                 <aside>

@@ -1,40 +1,51 @@
-import { FC, useContext, useMemo } from 'react'
-import CssBaseline from '@mui/material/CssBaseline'
-import { ThemeProvider as MuiThemeProvider, createTheme } from '@mui/material/styles'
+import React, { createContext, ReactNode, useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react'
+import { DefaultTheme, ThemeProvider } from 'styled-components'
+import { darkTheme, lightTheme } from '@/Styles/theme'
 
-import { ChosenTheme } from './ChosenTheme'
-
-export const ThemeProvider: FC = ({ children }) => {
-  const { theme } = useContext(ChosenTheme)
-  const muiTheme = useMemo(() => createThemeHelper(theme), [theme])
-
-  return (
-    <MuiThemeProvider theme={muiTheme}>
-      <CssBaseline />
-      {children}
-    </MuiThemeProvider>
-  )
+export type ThemeContextData = {
+    toggleTheme(theme: 'dark' | 'light'): void
+    selectedTheme: DefaultTheme
 }
 
-const brandColor = '#55a9ff'
-const createThemeHelper = (theme: 'dark' | 'light') => {
-  const isDark = theme === 'dark'
-  return createTheme({
-    palette: {
-      mode: theme,
-      background: {
-        default: isDark ? '#303030;' : '#f0f0f0',
-        paper: isDark ? '#242526' : '#f0f0f0'
-      },
-      primary: {
-        main: brandColor
-      },
-      error: {
-        main: 'rgb(232, 51, 51)'
-      },
-      success: {
-        main: 'rgb(76,175,80)'
-      }
+type Props = {
+    children: ReactNode
+}
+
+export const ThemeContext = createContext<ThemeContextData>({} as ThemeContextData)
+
+export const ThemeContextProvider = ({ children }: Props) => {
+    const [selectedTheme, setSelectedTheme] = useState<DefaultTheme>(lightTheme)
+
+    useLayoutEffect(() => {
+        const savedTheme = localStorage.getItem('@Theme')
+
+        if (savedTheme) {
+            setSelectedTheme(savedTheme === 'light' ? lightTheme : darkTheme)
+        }
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('Tsurus@theme', selectedTheme.title)
+    }, [selectedTheme])
+
+    const toggleTheme = useCallback(async (theme: 'dark' | 'light') => {
+        setSelectedTheme(theme === 'light' ? lightTheme : darkTheme)
+    }, [])
+
+    return (
+        <ThemeContext.Provider value={{ toggleTheme, selectedTheme }}>
+            <ThemeProvider theme={selectedTheme}>{children}</ThemeProvider>
+        </ThemeContext.Provider>
+    )
+}
+
+// Custom hook para alterar o tema e verificar o atual
+export const useToggleTheme = (): ThemeContextData => {
+    const context = useContext(ThemeContext)
+
+    if (!context) {
+        throw new Error('O Hook useToggleTheme deve ser usado dentro de um ThemeContextProvider!!')
     }
-  })
+
+    return context
 }
