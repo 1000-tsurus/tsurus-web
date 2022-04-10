@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { styled } from '@mui/material/styles';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -6,6 +6,10 @@ import StepLabel from '@mui/material/StepLabel';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import { StepIconProps } from '@mui/material/StepIcon';
 import { RegisterContainer } from './style'
+import { ThemeContext } from '@/providers/Theme';
+import * as FiIcons from 'react-icons/fi';
+import { darkTheme, lightTheme } from '@/Styles/theme'
+import { red } from '@mui/material/colors';
 
 type Props = {
     steps: { 
@@ -15,7 +19,9 @@ type Props = {
         content: JSX.Element
     }[];
     step: number;
+    onSubmit: () => void;
     setStep: (step: number) => void;
+    handleClearForms?: () => void;
     handleNextStep: () => void;
     handlePrevStep: () => void;
     handleSelectStep: (step_id: number) => void;
@@ -25,11 +31,14 @@ export default function Steps({
     steps,
     step,
     setStep,
+    onSubmit,
+    handleClearForms,
     handleNextStep,
     handlePrevStep,
     handleSelectStep,
 }: Props) {
-    const ColorlibConnector = styled(StepConnector)(({ theme }) => ({
+    const {selectedTheme} = useContext(ThemeContext),
+        ColorlibConnector = styled(StepConnector)(({ theme }) => ({
             [`&.${stepConnectorClasses.alternativeLabel}`]: {
                 top: 22,
             },
@@ -51,16 +60,16 @@ export default function Steps({
                 height: 3,
                 border: 0,
                 backgroundColor:
-                    theme.palette.mode === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
+                    selectedTheme.title === 'dark' ? theme.palette.grey[800] : '#eaeaf0',
                 borderRadius: 1,
             },
         })),
         ColorlibStepIconRoot = styled('div')<{
             ownerState: { completed?: boolean; active?: boolean };
-        }>(({ theme, ownerState }) => ({
-            backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#ccc',
+        }>(({ ownerState }) => ({
+            backgroundColor: selectedTheme.title === 'dark' ? '#424242' : '#eaeaf0',
             zIndex: 1,
-            color: '#fff',
+            color: selectedTheme.colors.text,
             width: 50,
             height: 50,
             display: 'flex',
@@ -69,11 +78,13 @@ export default function Steps({
             justifyContent: 'center',
             alignItems: 'center',
             ...(ownerState.active && {
+                color: '#fff',
                 backgroundImage:
                     'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
                 boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
             }),
             ...(ownerState.completed && {
+                color: '#fff',
                 backgroundImage:
                     'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
             }),
@@ -103,14 +114,28 @@ export default function Steps({
                 <Stepper alternativeLabel activeStep={step} connector={<ColorlibConnector />}>
                     {steps.map((label) => (
                         <Step key={label.title}>
-                            <StepLabel StepIconComponent={ColorlibStepIcon}>{label.title}</StepLabel>
+                            <StepLabel 
+                                StepIconComponent={ColorlibStepIcon}
+                                style={{
+                                    color: selectedTheme.colors.text,
+                                }}
+                            >{label.title}</StepLabel>
                         </Step>
                     ))}
                 </Stepper>
             </header>
 
-            <section>
+            <section className='step_body'>
+
                 <div className='body'>
+                    {handleClearForms && <div
+                        onClick={handleClearForms}
+                        className='delete_values' 
+                        title='Exclui os dados salvos nos formulários'
+                    >
+                        <FiIcons.FiTrash2/>
+                        Excluir
+                    </div>}
                     {steps[step].content}
                 </div>
 
@@ -120,11 +145,17 @@ export default function Steps({
                         disabled={step === 0}
                         className='prev'
                     >Anterior</button>
-                    <button
-                        onClick={handleNextStep}
-                        disabled={step === 2}
-                        className='next'
-                    >Próximo</button>
+                    {!(step === steps.length - 1) ? 
+                        <button
+                            onClick={handleNextStep}
+                            disabled={step === steps.length - 1}
+                            className='next'
+                        >Próximo</button> : 
+                        <button
+                            onClick={onSubmit}
+                            className='next'
+                        >Finalizar</button>
+                    }
                 </footer>
             </section>
         </RegisterContainer>
