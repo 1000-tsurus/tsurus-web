@@ -15,21 +15,21 @@ export default function MentorList() {
             setUsers(res.data)
         }).catch(err => {
             console.log(err)
-            toast.error('Erro ao carregar os mentores', {theme: 'colored'})
+            toast.error('Erro ao carregar os mentores', { theme: 'colored' })
         }).finally(() => setIsLoading(false))
     }, [])
 
     return (
         <List>
             {!isLoading ? <>
-                <h1>Escolha seu mentor:</h1>
+                <h1>Escolha seu mentor:</h1><br></br>
                 <div className='mentor_grid'>
-                    {users && users.map((user, i) => 
+                    {users && users.map((user, i) =>
                         <Card key={i} user={user} />
                     )}
                 </div>
-            </> : 
-            <Skeletons/>}
+            </> :
+                <Skeletons />}
         </List>
     )
 }
