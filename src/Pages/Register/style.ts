@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 
 export const RegisterContainer = styled.div`
 
@@ -77,6 +77,82 @@ export const StepContainer = styled.div`
                         font-size: .9rem;
                         font-family: 'Roboto', sans-serif;
                     }
+                }
+            }
+        }
+    }
+    section.life_infos{
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 2.5%;
+        aside.sec_left{
+            display: flex;
+            flex-direction: column;
+            gap: 9rem;
+            div.occ_row{
+                height: fit-content;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                label{
+                    margin-bottom: 15px;
+                    font-weight: 700;
+                }
+                input.the_input{
+                    font-family: 'Montserrat', sans-serif;
+                    width: 80%;
+                    padding: 7px 5px;
+                    border-radius: 5px;
+                    border: none;
+                    outline: none;
+                }
+            }
+        }
+        aside.sec_right{
+            display: flex;
+            flex-direction: column;
+            gap: calc(7rem - 80px);
+            div.occ_row{
+                height: fit-content;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                button.add_skill_button{
+                    background-color: transparent;
+                    border: 2px solid ${({theme}) => theme.colors.text};
+                    color: ${({theme}) => theme.colors.text};
+                    outline: none;
+                    width: fit-content;
+                    padding: 5px 10px;
+                    margin-top: 10px;
+                    border-radius: 5px;
+                    font-family: 'Montserrat', sans-serif;
+                    cursor: pointer;
+                }
+                label{
+                    margin-bottom: 15px;
+                    font-weight: 700;
+                }
+                input.the_input{
+                    font-family: 'Montserrat', sans-serif;
+                    width: 80%;
+                    padding: 7px 5px;
+                    border-radius: 5px;
+                    border: none;
+                    outline: none;
+                }
+                textarea{
+                    font-family: 'Montserrat', sans-serif;
+                    width: 80%;
+                    max-width: 80%;
+                    padding: 7px 5px;
+                    border-radius: 5px;
+                    border: none;
+                    outline: none;
+                    min-height: 100px;
+                    max-height: 100%;
                 }
             }
         }

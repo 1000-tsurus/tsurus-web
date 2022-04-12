@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import InputMask from 'react-input-mask';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as AiIcons from 'react-icons/ai'
@@ -12,7 +12,11 @@ import {
     RegisterContainer,
     StepContainer
 } from './style'
-import { Checkbox } from '@mui/material';
+import { Checkbox, Input, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, Skeleton } from '@mui/material';
+import { api } from '@/Services/api';
+import { ThemeContext } from '@/providers/Theme';
+import CreateSkillModal from '@/Components/CreateSkillModal/CreateSkillModal';
+import { toast } from 'react-toastify';
 
 const defaultValues: Partial<FormValues> = {
     name: '',
@@ -38,7 +42,10 @@ export type FormValues = {
     is_public: boolean,
     occupation: string,
     occupation_date: string,
-    skills: number[],
+    skills: {
+        name: string;
+        id: number;
+    }[],
     trajectory: string,
     to_help: string,
     icon: any
@@ -59,7 +66,12 @@ const validationSchema = [
     yup.object({
         occupation: yup.string(),
         occupation_date: yup.date(),
-        skills: yup.array().of(yup.string()),
+        skills: yup.array().of(
+            yup.object({
+                name: yup.string(),
+                id: yup.number(),
+            })
+        ),
         trajectory: yup.string(),
     }),
     // Step 3
@@ -71,8 +83,26 @@ const validationSchema = [
 
 export default function Register() {
     const [activeStep, setActiveStep] = useState(0),
+        [skills, setSkills] = useState<{
+            id: number,
+            skill_name: string,
+            selected?: boolean,
+            created_at: string,
+            updated_at: string
+        }[] | undefined>(),
+        [isLoadingSkill, setIsLoadingSkill] = useState(false),
+        [isCreateOpen, setIsCreateOpen] = useState(false),
+        {selectedTheme} = useContext(ThemeContext),
         currentValidationSchema = validationSchema[activeStep],
         [storagedForms, setStoragedForms] = useLocalStorage<any[]>('mentorRegister', []),
+        MenuProps = {
+            PaperProps: {
+                style: {
+                    maxHeight: 40 * 4.5 + 20,
+                    width: 250,
+                },
+            },
+        },
         methods = useForm<FormValues>({
             shouldUnregister: false,
             defaultValues,
@@ -172,13 +202,81 @@ export default function Register() {
                                     />
                                 </div>
                             </aside>
-                            <aside>
+                            <aside className='sec_right'>
                                 <div className='occ_row'>
                                     <label htmlFor="name">Quais suas principais habilidades?</label>
-                                    <input
-                                        className='the_input'
-                                        type="month"
-                                    />
+                                    {!isLoadingSkill && skills ? 
+                                        <>
+                                            <Select
+                                                label='Habilidades'
+                                                labelId="demo-multiple-checkbox-label"
+                                                id="demo-multiple-checkbox"
+                                                multiple
+                                                value={skills}
+                                                onChange={(e) => {
+                                                    let selected = skills.map(skill => {
+                                                        return {
+                                                            ...skill,
+                                                            selected: 
+                                                               !skill.selected ? !!(
+                                                                   e.target.value[e.target.value.length - 1] === skill.skill_name) 
+                                                                    : !(e.target.value[e.target.value.length - 1] === skill.skill_name 
+                                                                        && skill.selected)
+                                                        }
+                                                    })
+                                                    setSkills(selected)
+                                                    selected.filter(skill => skill.selected).map(skill => {skill.skill_name, skill.id})
+                                                    // adiciona novo valor no setValue
+                                                    let new_values = selected.filter(skill => skill.selected).map(skill => {return {
+                                                        id: skill.id,
+                                                        name: skill.skill_name
+                                                    }})
+                                                    setValue('skills', [...new_values])
+                                                }}
+                                                input={
+                                                    <Input
+                                                        style={{ 
+                                                            color: '#000',
+                                                            backgroundColor: selectedTheme.title === 'dark' ? '#000' : '#fff'
+                                                        }}
+                                                    />}
+                                                renderValue={(selected) => skills.filter(skill => skill.selected).map(skill => skill.skill_name).join(', ')}
+                                                MenuProps={MenuProps}
+                                                style={{ 
+                                                    borderRadius: '5px',
+                                                    color: '#000',
+                                                    backgroundColor: '#fff',
+                                                    padding: '0 1rem',
+                                                    width: '80%',
+                                                    height: '40px',
+                                                }}
+                                            >
+                                                {skills.map((skill) => (
+                                                    <MenuItem 
+                                                        key={skill.skill_name}
+                                                        value={skill.skill_name}
+                                                        style={{ color: '#000'}}
+                                                    >
+                                                        <Checkbox checked={skill.selected} />
+                                                        <ListItemText primary={skill.skill_name} />
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                            <button 
+                                                className='add_skill_button'
+                                                onClick={() => {setIsCreateOpen(true)}}
+                                            >Criar nova habilidade</button>
+                                            <CreateSkillModal 
+                                                onClose={() => {setIsCreateOpen(false)}}
+                                                isOpen={isCreateOpen}
+                                            />
+                                        </>
+                                    : <Skeleton 
+                                        width={'80%'}
+                                        height={40}
+                                        animation='wave'
+                                        variant='text'
+                                    />}
                                 </div>
                                 <div className='occ_row'>
                                     <label htmlFor="name">Qual sua trajetória profissional?</label>
@@ -236,6 +334,49 @@ export default function Register() {
         handlePrevStep,
         handleSelectStep
     }
+
+    useEffect(() => {
+        setIsLoadingSkill(true);
+        api.get('skills/index').then(response => {
+            // adiciona a propriedade selected aos objetos
+            const skill_select = response.data.map((skill: any) => {
+                return {
+                    ...skill,
+                    selected: false
+                }
+            })
+            skill_select.map((skill: { skill_name: string; selected: boolean; }) => {
+                if(getValues().skills.map(skill => skill.name).includes(skill.skill_name)) {
+                    skill.selected = true;
+                }
+            })
+            setSkills(skill_select);
+        }).finally(() => {
+            setIsLoadingSkill(false);
+        })
+    }, [isCreateOpen]);
+
+    useEffect(() => {
+        if(skills){
+            if(skills.filter(skill => skill.selected).length > 5){
+                toast.error('Você só pode selecionar 5 habilidades', {theme: 'colored'});
+                let temp_skills = skills.filter(skill => skill.selected)
+                for(let i = 0; i < temp_skills.length - 5; i++){
+                    if(skills[i].selected){
+                        skills[i].selected = false;
+                        break;
+                    }
+                }
+                let new_values = temp_skills.filter(skill => skill.selected).map(skill => {return {
+                    id: skill.id,
+                    name: skill.skill_name
+                }})
+                setValue('skills', [...new_values])
+                setSkills(temp_skills);
+                console.log("🚀 ~ file: Register.tsx ~ line 367 ~ useEffect ~ temp_skills", temp_skills)
+            }
+        }
+    }, [skills]);
 
     return (
         <RegisterContainer>
