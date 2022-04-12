@@ -25,14 +25,6 @@ export default function LoginContainer() {
         const hidden = document.getElementById('loginContainer')
     }
 
-    const getEmailPassword = (event: any) => {
-        if(email.length >= 8) {
-            alert('Email enviado com sucesso')
-        }
-
-        return alert('Email não enviado')
-    }
-
     return (
         <All>
             <div className="loginContainer" id="loginContainer">
