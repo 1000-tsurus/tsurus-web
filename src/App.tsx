@@ -11,6 +11,7 @@ import Register from './Pages/Register/Register'
 import User from './Pages/User/User'
 import Footer from './Components/Footer/Footer'
 import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Root = styled.div`
     padding-top: 50px;
