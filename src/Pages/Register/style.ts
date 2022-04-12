@@ -7,6 +7,14 @@ export const RegisterContainer = styled.div`
 
 export const StepContainer = styled.div`
     height: 100%;
+    div.row_error{
+        margin-top: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        color: ${({theme}) => theme.colors.danger};
+        gap: 5px;
+    }
     section.user_infos{
         height: 100%;
         display: grid;

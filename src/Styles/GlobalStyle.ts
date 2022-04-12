@@ -17,7 +17,7 @@ export const GlobalStyle = createGlobalStyle`
         font-family: 'Montserrat', sans-serif;
         font-weight: lighter;
         scroll-behavior: smooth;
-        color: #c7c7c7;
+        color: ${({ theme }) => theme.colors.text};
         overflow-x: hidden;
         overflow-y: auto !important;
         -webkit-font-smoothing: antialiased;

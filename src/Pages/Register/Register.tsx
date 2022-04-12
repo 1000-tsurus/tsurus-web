@@ -16,6 +16,7 @@ import { Checkbox, Input, InputLabel, ListItemText, MenuItem, OutlinedInput, Sel
 import { api } from '@/Services/api';
 import { ThemeContext } from '@/providers/Theme';
 import CreateSkillModal from '@/Components/CreateSkillModal/CreateSkillModal';
+import * as FiIcons from 'react-icons/fi';
 import { toast } from 'react-toastify';
 
 const defaultValues: Partial<FormValues> = {
@@ -71,12 +72,12 @@ const validationSchema = [
                 name: yup.string(),
                 id: yup.number(),
             })
-        ),
-        trajectory: yup.string(),
+        ).required('Campo obrigatório'),
+        trajectory: yup.string().required('Campo obrigatório'),
     }),
     // Step 3
     yup.object({
-        to_help: yup.string(),
+        to_help: yup.string().required('Campo obrigatório'),
         icon_url: yup.mixed()
     }),
 ];
@@ -130,14 +131,24 @@ export default function Register() {
                                     <input 
                                         className='the_input'
                                         type="text"
+                                        {...register('name')}
                                     />
+                                    {errors.name && <div className='row_error'>
+                                        <FiIcons.FiAlertCircle/>
+                                        <span className='error'>{errors.name.message}</span>
+                                    </div>}
                                 </div>
                                 <div className='user_infos_row'>
                                     <label htmlFor="name">Senha</label>
                                     <input 
                                         className='the_input'
                                         type="password"
+                                        {...register('password')}
                                     />
+                                    {errors.password && <div className='row_error'>
+                                        <FiIcons.FiAlertCircle/>
+                                        <span className='error'>{errors.password.message}</span>
+                                    </div>}
                                 </div>
                             </aside>
                             <aside className='first_right'>
@@ -146,7 +157,12 @@ export default function Register() {
                                     <input 
                                         className='the_input'
                                         type="email"
+                                        {...register('email')}
                                     />
+                                    {errors.email && <div className='row_error'>
+                                        <FiIcons.FiAlertCircle/>
+                                        <span className='error'>{errors.email.message}</span>
+                                    </div>}
                                 </div>
                                 <div className='phone_box'>
                                     <div className='user_infos_row'>
@@ -154,15 +170,20 @@ export default function Register() {
                                         <InputMask
                                             className='the_input'
                                             mask={'+99 (99) 99999-9999'}
+                                            {...register('phone')}
                                         />
+                                        {errors.phone && <div className='row_error'>
+                                            <FiIcons.FiAlertCircle/>
+                                            <span className='error'>{errors.phone.message}</span>
+                                        </div>}
                                     </div>
                                     <div className='phone_type_box'>
                                         <div className='check_row'>
-                                            <Checkbox />
+                                            <Checkbox {...register('is_wpp')}/>
                                             <span>Este número é WhatsApp</span>
                                         </div>
                                         <div className='check_row'>
-                                            <Checkbox />
+                                            <Checkbox {...register('is_public')}/>
                                             <span>Este número pode ser visualizado por usuários não registrados</span>
                                         </div>
                                     </div>
@@ -176,12 +197,6 @@ export default function Register() {
                 title: 'Algumas perguntinhas',
                 description: 'Preencha as informações de cadastro',
                 icon: <RiIcons.RiQuestionAnswerLine />,
-                /*
-                    occupation
-                    occupation_date
-                    skills
-                    trajectory
-                */
                 content: (
                     <StepContainer>
                         <section className='life_infos'>
@@ -189,17 +204,28 @@ export default function Register() {
                                 <div className='occ_row'>
                                     <label htmlFor="name">Qual sua ocupação (cargo) atualmente?</label>
                                     <input
+                                        value={getValues().occupation}
                                         className='the_input'
                                         type="text"
+                                        {...register('occupation')}
                                     />
-
+                                    {errors.occupation && <div className='row_error'>
+                                        <FiIcons.FiAlertCircle/>
+                                        <span className='error'>{errors.occupation.message}</span>
+                                    </div>}
                                 </div>
                                 <div className='occ_row'>
                                     <label htmlFor="name">Desde quando esta neste cargo?</label>
                                     <input
+                                        value={new Date(getValues().occupation_date).toLocaleDateString()}
                                         className='the_input'
                                         type="month"
+                                        {...register('occupation_date')}
                                     />
+                                    {errors.occupation_date && <div className='row_error'>
+                                        <FiIcons.FiAlertCircle/>
+                                        <span className='error'>{errors.occupation_date.message}</span>
+                                    </div>}
                                 </div>
                             </aside>
                             <aside className='sec_right'>
@@ -270,6 +296,10 @@ export default function Register() {
                                                 onClose={() => {setIsCreateOpen(false)}}
                                                 isOpen={isCreateOpen}
                                             />
+                                            {errors.skills || !getValues().skills && <div className='row_error'>
+                                                <FiIcons.FiAlertCircle/>
+                                                <span className='error'>É necessário ter ao menos uma habilidade</span>
+                                            </div>}
                                         </>
                                     : <Skeleton 
                                         width={'80%'}
@@ -280,7 +310,13 @@ export default function Register() {
                                 </div>
                                 <div className='occ_row'>
                                     <label htmlFor="name">Qual sua trajetória profissional?</label>
-                                    <textarea></textarea>
+                                    <textarea
+                                        {...register('trajectory')}
+                                    ></textarea>
+                                    {errors.trajectory && <div className='row_error'>
+                                        <FiIcons.FiAlertCircle/>
+                                        <span className='error'>{errors.trajectory.message}</span>
+                                    </div>}
                                 </div>
                             </aside>
                         </section>
@@ -306,8 +342,15 @@ export default function Register() {
                 )
             },
         ],
-        handleNextStep = () => {
-            setActiveStep(prevActiveStep => prevActiveStep + 1);
+        handleNextStep = async () => {
+            const isStepValid = await trigger();
+            let values = getValues()
+            if(values && isStepValid){
+                setStoragedForms([{
+                    ...values
+                }]);
+                setActiveStep(prevActiveStep => prevActiveStep + 1);
+            }
         },
         handlePrevStep = () => {
             setActiveStep(prevActiveStep => prevActiveStep - 1);
@@ -373,7 +416,6 @@ export default function Register() {
                 }})
                 setValue('skills', [...new_values])
                 setSkills(temp_skills);
-                console.log("🚀 ~ file: Register.tsx ~ line 367 ~ useEffect ~ temp_skills", temp_skills)
             }
         }
     }, [skills]);
