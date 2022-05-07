@@ -12,7 +12,12 @@ export default function LoginContainer() {
                 email,
                 password
             }).then(res => {
-                console.log(res.data)
+                for (let key in res.data) {
+                    localStorage.setItem(
+                        `Tsurus@${key}`,
+                        typeof res.data[key] === 'object' ? JSON.stringify(res.data[key]) : res.data[key]
+                    )
+                }
             })
         }
 
