@@ -11,25 +11,28 @@ export default function MentorList() {
 
     useEffect(() => {
         setIsLoading(true)
-        api.get('/user/index').then(res => {
-            setUsers(res.data)
-        }).catch(err => {
-            console.log(err)
-            toast.error('Erro ao carregar os mentores', { theme: 'colored' })
-        }).finally(() => setIsLoading(false))
+        api.get('/user/index')
+            .then(res => {
+                setUsers(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+                toast.error('Erro ao carregar os mentores', { theme: 'colored' })
+            })
+            .finally(() => setIsLoading(false))
     }, [])
 
     return (
         <List>
-            {!isLoading ? <>
-                <h1>Escolha seu mentor:</h1><br></br>
-                <div className='mentor_grid'>
-                    {users && users.map((user, i) =>
-                        <Card key={i} user={user} />
-                    )}
-                </div>
-            </> :
-                <Skeletons />}
+            {!isLoading ? (
+                <>
+                    <h1>Escolha seu mentor:</h1>
+                    <br></br>
+                    <div className='mentor_grid'>{users && users.map((user, i) => <Card key={i} user={user} />)}</div>
+                </>
+            ) : (
+                <Skeletons />
+            )}
         </List>
     )
 }
