@@ -20,7 +20,7 @@ export const All = styled.div`
     grid-template-columns: 0.8fr 1fr;
     height: calc(100vh - 60px);
     div.loginContainer {
-        box-shadow: 5px 0px 50px rgba(0, 0, 0, 0.8);
+        box-shadow: 7px -7px 17px 2px rgba(0,0,0,0.79);
         background-color: ${({ theme }) => theme.colors.background2};
         width: 100%;
         height: 100%;
@@ -43,9 +43,10 @@ export const All = styled.div`
             border-radius: 0;
             outline: none;
             margin-bottom: 10px;
-            border-bottom: 1px solid black;
+            border-bottom: 1px solid ${({ theme }) => theme.colors.black};
             background-color: transparent;
             text-align: center;
+            color: ${({ theme }) => theme.colors.black};
         }
         label {
             opacity: 0.7;
@@ -61,28 +62,38 @@ export const All = styled.div`
             display: flex;
             justify-content: space-between;
             align-items: center;
-            button.forgotPassword {
-                color: blue;
+            a.notRegistered {
+                font-size: 0.9rem;
                 border: none;
                 outline: none;
                 text-decoration: under;
                 cursor: pointer;
                 padding: none;
+                font-weight: 400;
                 margin: 0;
                 background-color: transparent;
+                & b{
+                    text-decoration: underline;
+                }
             }
             button.btn {
+                min-width: 100px;
                 padding: 0.5rem 2rem;
                 border-radius: 12px;
                 background-color: blue;
                 color: white;
                 cursor: pointer;
                 border: none;
+                &:disabled{
+                    opacity: 0.6;
+                    cursor: not-allowed;  
+                }
             }
         }
     }
 
     div.imgContainer {
+        box-shadow: inset 18px 0px 27px -16px rgba(0,0,0,0.47);
         animation: ${bkSweep} 10s linear infinite;
         background: linear-gradient(
             136deg,
