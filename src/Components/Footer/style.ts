@@ -45,6 +45,15 @@ export const All = styled.div`
             font-weight: bolder;
             div.socialMedia {
                 margin-top: 5px;
+                div.icons-row {
+                    margin-top: 5px;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    i {
+                        font-size: 3rem;
+                    }
+                }
             }
         }
     }

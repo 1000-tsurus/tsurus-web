@@ -1,23 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react'
-import InputMask from 'react-input-mask';
-import { yupResolver } from '@hookform/resolvers/yup';
+import InputMask from 'react-input-mask'
+import { yupResolver } from '@hookform/resolvers/yup'
 import * as AiIcons from 'react-icons/ai'
 import * as RiIcons from 'react-icons/ri'
 import * as GiIcons from 'react-icons/gi'
-import * as yup from 'yup';
-import Steps from '@/Components/Steps/Steps';
-import { useForm } from 'react-hook-form';
-import { useLocalStorage } from '@caldwell619/react-hooks';
-import {
-    RegisterContainer,
-    StepContainer
-} from './style'
-import { Checkbox, Input, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, Skeleton } from '@mui/material';
-import { api } from '@/Services/api';
-import { ThemeContext } from '@/providers/Theme';
-import CreateSkillModal from '@/Components/CreateSkillModal/CreateSkillModal';
-import * as FiIcons from 'react-icons/fi';
-import { toast } from 'react-toastify';
+import * as yup from 'yup'
+import Steps from '@/Components/Steps/Steps'
+import { useForm } from 'react-hook-form'
+import { useLocalStorage } from '@caldwell619/react-hooks'
+import { RegisterContainer, StepContainer } from './style'
+import { Checkbox, Input, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, Skeleton } from '@mui/material'
+import { api } from '@/Services/api'
+import { ThemeContext } from '@/providers/Theme'
+import CreateSkillModal from '@/Components/CreateSkillModal/CreateSkillModal'
+import * as FiIcons from 'react-icons/fi'
+import { toast } from 'react-toastify'
 
 const defaultValues: Partial<FormValues> = {
     name: '',
@@ -35,20 +32,20 @@ const defaultValues: Partial<FormValues> = {
 }
 
 export type FormValues = {
-    name: string,
-    password: string,
-    email: string,
-    phone: string,
-    is_wpp: boolean,
-    is_public: boolean,
-    occupation: string,
-    occupation_date: string,
+    name: string
+    password: string
+    email: string
+    phone: string
+    is_wpp: boolean
+    is_public: boolean
+    occupation: string
+    occupation_date: string
     skills: {
-        name: string;
-        id: number;
-    }[],
-    trajectory: string,
-    to_help: string,
+        name: string
+        id: number
+    }[]
+    trajectory: string
+    to_help: string
     icon: any
 }
 
@@ -61,61 +58,68 @@ const validationSchema = [
         email: yup.string().required('Campo Obrigatório').email('Digite um e-mail válido'),
         phone: yup.string().required('Campo obrigatório').min(11),
         is_wpp: yup.boolean().required('Campo obrigatório'),
-        is_public: yup.boolean().required('Campo obrigatório'),
+        is_public: yup.boolean().required('Campo obrigatório')
     }),
     // Step 2
     yup.object({
         occupation: yup.string(),
         occupation_date: yup.date(),
-        skills: yup.array().of(
-            yup.object({
-                name: yup.string(),
-                id: yup.number(),
-            })
-        ).required('Campo obrigatório'),
-        trajectory: yup.string().required('Campo obrigatório'),
+        skills: yup
+            .array()
+            .of(
+                yup.object({
+                    name: yup.string(),
+                    id: yup.number()
+                })
+            )
+            .required('Campo obrigatório'),
+        trajectory: yup.string().required('Campo obrigatório')
     }),
     // Step 3
     yup.object({
         to_help: yup.string().required('Campo obrigatório'),
         icon_url: yup.mixed()
-    }),
-];
+    })
+]
 
 export default function Register() {
     const [activeStep, setActiveStep] = useState(0),
-        [skills, setSkills] = useState<{
-            id: number,
-            skill_name: string,
-            selected?: boolean,
-            created_at: string,
-            updated_at: string
-        }[] | undefined>(),
+        [skills, setSkills] = useState<
+            | {
+                  id: number
+                  skill_name: string
+                  selected?: boolean
+                  created_at: string
+                  updated_at: string
+              }[]
+            | undefined
+        >(),
         [isLoadingSkill, setIsLoadingSkill] = useState(false),
         [isCreateOpen, setIsCreateOpen] = useState(false),
-        {selectedTheme} = useContext(ThemeContext),
+        { selectedTheme } = useContext(ThemeContext),
         currentValidationSchema = validationSchema[activeStep],
         [storagedForms, setStoragedForms] = useLocalStorage<any[]>('mentorRegister', []),
         MenuProps = {
             PaperProps: {
                 style: {
                     maxHeight: 40 * 4.5 + 20,
-                    width: 250,
-                },
-            },
+                    width: 250
+                }
+            }
         },
         methods = useForm<FormValues>({
             shouldUnregister: false,
             defaultValues,
             resolver: yupResolver(currentValidationSchema),
-            mode: "all",
-        }), {
+            mode: 'all'
+        }),
+        {
             reset,
             getValues,
             trigger,
             register,
             formState: { errors },
-            setValue,
+            setValue
         } = methods,
         steps = [
             {
@@ -127,63 +131,59 @@ export default function Register() {
                         <section className='user_infos'>
                             <aside className='first_left'>
                                 <div className='user_infos_row'>
-                                    <label htmlFor="name">Nome</label>
-                                    <input 
-                                        className='the_input'
-                                        type="text"
-                                        {...register('name')}
-                                    />
-                                    {errors.name && <div className='row_error'>
-                                        <FiIcons.FiAlertCircle/>
-                                        <span className='error'>{errors.name.message}</span>
-                                    </div>}
+                                    <label htmlFor='name'>Nome</label>
+                                    <input className='the_input' type='text' {...register('name')} />
+                                    {errors.name && (
+                                        <div className='row_error'>
+                                            <FiIcons.FiAlertCircle />
+                                            <span className='error'>{errors.name.message}</span>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className='user_infos_row'>
-                                    <label htmlFor="name">Senha</label>
-                                    <input 
-                                        className='the_input'
-                                        type="password"
-                                        {...register('password')}
-                                    />
-                                    {errors.password && <div className='row_error'>
-                                        <FiIcons.FiAlertCircle/>
-                                        <span className='error'>{errors.password.message}</span>
-                                    </div>}
+                                    <label htmlFor='name'>Senha</label>
+                                    <input className='the_input' type='password' {...register('password')} />
+                                    {errors.password && (
+                                        <div className='row_error'>
+                                            <FiIcons.FiAlertCircle />
+                                            <span className='error'>{errors.password.message}</span>
+                                        </div>
+                                    )}
                                 </div>
                             </aside>
                             <aside className='first_right'>
                                 <div className='user_infos_row'>
-                                    <label htmlFor="name">Email</label>
-                                    <input 
-                                        className='the_input'
-                                        type="email"
-                                        {...register('email')}
-                                    />
-                                    {errors.email && <div className='row_error'>
-                                        <FiIcons.FiAlertCircle/>
-                                        <span className='error'>{errors.email.message}</span>
-                                    </div>}
+                                    <label htmlFor='name'>Email</label>
+                                    <input className='the_input' type='email' {...register('email')} />
+                                    {errors.email && (
+                                        <div className='row_error'>
+                                            <FiIcons.FiAlertCircle />
+                                            <span className='error'>{errors.email.message}</span>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className='phone_box'>
                                     <div className='user_infos_row'>
-                                        <label htmlFor="name">Número</label>
+                                        <label htmlFor='name'>Número</label>
                                         <InputMask
                                             className='the_input'
                                             mask={'+99 (99) 99999-9999'}
                                             {...register('phone')}
                                         />
-                                        {errors.phone && <div className='row_error'>
-                                            <FiIcons.FiAlertCircle/>
-                                            <span className='error'>{errors.phone.message}</span>
-                                        </div>}
+                                        {errors.phone && (
+                                            <div className='row_error'>
+                                                <FiIcons.FiAlertCircle />
+                                                <span className='error'>{errors.phone.message}</span>
+                                            </div>
+                                        )}
                                     </div>
                                     <div className='phone_type_box'>
                                         <div className='check_row'>
-                                            <Checkbox {...register('is_wpp')}/>
+                                            <Checkbox {...register('is_wpp')} />
                                             <span>Este número é WhatsApp</span>
                                         </div>
                                         <div className='check_row'>
-                                            <Checkbox {...register('is_public')}/>
+                                            <Checkbox {...register('is_public')} />
                                             <span>Este número pode ser visualizado por usuários não registrados</span>
                                         </div>
                                     </div>
@@ -202,121 +202,152 @@ export default function Register() {
                         <section className='life_infos'>
                             <aside className='sec_left'>
                                 <div className='occ_row'>
-                                    <label htmlFor="name">Qual sua ocupação (cargo) atualmente?</label>
+                                    <label htmlFor='name'>Qual sua ocupação (cargo) atualmente?</label>
                                     <input
                                         value={getValues().occupation}
                                         className='the_input'
-                                        type="text"
+                                        type='text'
                                         {...register('occupation')}
                                     />
-                                    {errors.occupation && <div className='row_error'>
-                                        <FiIcons.FiAlertCircle/>
-                                        <span className='error'>{errors.occupation.message}</span>
-                                    </div>}
+                                    {errors.occupation && (
+                                        <div className='row_error'>
+                                            <FiIcons.FiAlertCircle />
+                                            <span className='error'>{errors.occupation.message}</span>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className='occ_row'>
-                                    <label htmlFor="name">Desde quando esta neste cargo?</label>
+                                    <label htmlFor='name'>Desde quando esta neste cargo?</label>
                                     <input
                                         value={new Date(getValues().occupation_date).toLocaleDateString()}
                                         className='the_input'
-                                        type="month"
+                                        type='month'
                                         {...register('occupation_date')}
                                     />
-                                    {errors.occupation_date && <div className='row_error'>
-                                        <FiIcons.FiAlertCircle/>
-                                        <span className='error'>{errors.occupation_date.message}</span>
-                                    </div>}
+                                    {errors.occupation_date && (
+                                        <div className='row_error'>
+                                            <FiIcons.FiAlertCircle />
+                                            <span className='error'>{errors.occupation_date.message}</span>
+                                        </div>
+                                    )}
                                 </div>
                             </aside>
                             <aside className='sec_right'>
                                 <div className='occ_row'>
-                                    <label htmlFor="name">Quais suas principais habilidades?</label>
-                                    {!isLoadingSkill && skills ? 
+                                    <label htmlFor='name'>Quais suas principais habilidades?</label>
+                                    {!isLoadingSkill && skills ? (
                                         <>
                                             <Select
                                                 label='Habilidades'
-                                                labelId="demo-multiple-checkbox-label"
-                                                id="demo-multiple-checkbox"
+                                                labelId='demo-multiple-checkbox-label'
+                                                id='demo-multiple-checkbox'
                                                 multiple
                                                 value={skills}
-                                                onChange={(e) => {
+                                                onChange={e => {
                                                     let selected = skills.map(skill => {
                                                         return {
                                                             ...skill,
-                                                            selected: 
-                                                               !skill.selected ? !!(
-                                                                   e.target.value[e.target.value.length - 1] === skill.skill_name) 
-                                                                    : !(e.target.value[e.target.value.length - 1] === skill.skill_name 
-                                                                        && skill.selected)
+                                                            selected: !skill.selected
+                                                                ? !!(
+                                                                      e.target.value[e.target.value.length - 1] ===
+                                                                      skill.skill_name
+                                                                  )
+                                                                : !(
+                                                                      e.target.value[e.target.value.length - 1] ===
+                                                                          skill.skill_name && skill.selected
+                                                                  )
                                                         }
                                                     })
                                                     setSkills(selected)
-                                                    selected.filter(skill => skill.selected).map(skill => {skill.skill_name, skill.id})
+                                                    selected
+                                                        .filter(skill => skill.selected)
+                                                        .map(skill => {
+                                                            skill.skill_name, skill.id
+                                                        })
                                                     // adiciona novo valor no setValue
-                                                    let new_values = selected.filter(skill => skill.selected).map(skill => {return {
-                                                        id: skill.id,
-                                                        name: skill.skill_name
-                                                    }})
+                                                    let new_values = selected
+                                                        .filter(skill => skill.selected)
+                                                        .map(skill => {
+                                                            return {
+                                                                id: skill.id,
+                                                                name: skill.skill_name
+                                                            }
+                                                        })
                                                     setValue('skills', [...new_values])
                                                 }}
                                                 input={
                                                     <Input
-                                                        style={{ 
+                                                        style={{
                                                             color: '#000',
-                                                            backgroundColor: selectedTheme.title === 'dark' ? '#000' : '#fff'
+                                                            backgroundColor:
+                                                                selectedTheme.title === 'dark' ? '#000' : '#fff'
                                                         }}
-                                                    />}
-                                                renderValue={(selected) => skills.filter(skill => skill.selected).map(skill => skill.skill_name).join(', ')}
+                                                    />
+                                                }
+                                                renderValue={selected =>
+                                                    skills
+                                                        .filter(skill => skill.selected)
+                                                        .map(skill => skill.skill_name)
+                                                        .join(', ')
+                                                }
                                                 MenuProps={MenuProps}
-                                                style={{ 
+                                                style={{
                                                     borderRadius: '5px',
                                                     color: '#000',
                                                     backgroundColor: '#fff',
                                                     padding: '0 1rem',
                                                     width: '80%',
-                                                    height: '40px',
+                                                    height: '40px'
                                                 }}
                                             >
-                                                {skills.map((skill) => (
-                                                    <MenuItem 
+                                                {skills.map(skill => (
+                                                    <MenuItem
                                                         key={skill.skill_name}
                                                         value={skill.skill_name}
-                                                        style={{ color: '#000'}}
+                                                        style={{ color: '#000' }}
                                                     >
                                                         <Checkbox checked={skill.selected} />
                                                         <ListItemText primary={skill.skill_name} />
                                                     </MenuItem>
                                                 ))}
                                             </Select>
-                                            <button 
+                                            <button
                                                 className='add_skill_button'
-                                                onClick={() => {setIsCreateOpen(true)}}
-                                            >Criar nova habilidade</button>
-                                            <CreateSkillModal 
-                                                onClose={() => {setIsCreateOpen(false)}}
+                                                onClick={() => {
+                                                    setIsCreateOpen(true)
+                                                }}
+                                            >
+                                                Criar nova habilidade
+                                            </button>
+                                            <CreateSkillModal
+                                                onClose={() => {
+                                                    setIsCreateOpen(false)
+                                                }}
                                                 isOpen={isCreateOpen}
                                             />
-                                            {errors.skills || !getValues().skills && <div className='row_error'>
-                                                <FiIcons.FiAlertCircle/>
-                                                <span className='error'>É necessário ter ao menos uma habilidade</span>
-                                            </div>}
+                                            {errors.skills ||
+                                                (!getValues().skills && (
+                                                    <div className='row_error'>
+                                                        <FiIcons.FiAlertCircle />
+                                                        <span className='error'>
+                                                            É necessário ter ao menos uma habilidade
+                                                        </span>
+                                                    </div>
+                                                ))}
                                         </>
-                                    : <Skeleton 
-                                        width={'80%'}
-                                        height={40}
-                                        animation='wave'
-                                        variant='text'
-                                    />}
+                                    ) : (
+                                        <Skeleton width={'80%'} height={40} animation='wave' variant='text' />
+                                    )}
                                 </div>
                                 <div className='occ_row'>
-                                    <label htmlFor="name">Qual sua trajetória profissional?</label>
-                                    <textarea
-                                        {...register('trajectory')}
-                                    ></textarea>
-                                    {errors.trajectory && <div className='row_error'>
-                                        <FiIcons.FiAlertCircle/>
-                                        <span className='error'>{errors.trajectory.message}</span>
-                                    </div>}
+                                    <label htmlFor='name'>Qual sua trajetória profissional?</label>
+                                    <textarea {...register('trajectory')}></textarea>
+                                    {errors.trajectory && (
+                                        <div className='row_error'>
+                                            <FiIcons.FiAlertCircle />
+                                            <span className='error'>{errors.trajectory.message}</span>
+                                        </div>
+                                    )}
                                 </div>
                             </aside>
                         </section>
@@ -334,37 +365,37 @@ export default function Register() {
                 content: (
                     <StepContainer>
                         <section>
-                            <aside className='finish_left'>
-                                
-                            </aside>
+                            <aside className='finish_left'></aside>
                         </section>
                     </StepContainer>
                 )
-            },
+            }
         ],
         handleNextStep = async () => {
-            const isStepValid = await trigger();
+            const isStepValid = await trigger()
             let values = getValues()
-            if(values && isStepValid){
-                setStoragedForms([{
-                    ...values
-                }]);
-                setActiveStep(prevActiveStep => prevActiveStep + 1);
+            if (values && isStepValid) {
+                setStoragedForms([
+                    {
+                        ...values
+                    }
+                ])
+                setActiveStep(prevActiveStep => prevActiveStep + 1)
             }
         },
         handlePrevStep = () => {
-            setActiveStep(prevActiveStep => prevActiveStep - 1);
+            setActiveStep(prevActiveStep => prevActiveStep - 1)
         },
         handleSelectStep = (step_id: number) => {
-            setActiveStep(step_id);
+            setActiveStep(step_id)
         },
         onSubmit = () => {
             console.log('submit')
         },
         handleClearForms = () => {
-            setStoragedForms([]);
-            reset();
-            setActiveStep(0);
+            setStoragedForms([])
+            reset()
+            setActiveStep(0)
         }
 
     let step_prop = {
@@ -379,50 +410,71 @@ export default function Register() {
     }
 
     useEffect(() => {
-        setIsLoadingSkill(true);
-        api.get('skills/index').then(response => {
-            // adiciona a propriedade selected aos objetos
-            const skill_select = response.data.map((skill: any) => {
-                return {
-                    ...skill,
-                    selected: false
-                }
+        setIsLoadingSkill(true)
+        api.get('skills/index')
+            .then(response => {
+                // adiciona a propriedade selected aos objetos
+                const skill_select = response.data.map((skill: any) => {
+                    return {
+                        ...skill,
+                        selected: false
+                    }
+                })
+                skill_select.map((skill: { skill_name: string; selected: boolean }) => {
+                    if (
+                        getValues()
+                            .skills.map(skill => skill.name)
+                            .includes(skill.skill_name)
+                    ) {
+                        skill.selected = true
+                    }
+                })
+                setSkills(skill_select)
             })
-            skill_select.map((skill: { skill_name: string; selected: boolean; }) => {
-                if(getValues().skills.map(skill => skill.name).includes(skill.skill_name)) {
-                    skill.selected = true;
-                }
+            .finally(() => {
+                setIsLoadingSkill(false)
             })
-            setSkills(skill_select);
-        }).finally(() => {
-            setIsLoadingSkill(false);
-        })
-    }, [isCreateOpen]);
+    }, [isCreateOpen])
 
     useEffect(() => {
-        if(skills){
-            if(skills.filter(skill => skill.selected).length > 5){
-                toast.error('Você só pode selecionar 5 habilidades', {theme: 'colored'});
+        if (skills) {
+            if (skills.filter(skill => skill.selected).length > 5) {
+                toast.error('Você só pode selecionar 5 habilidades', { theme: 'colored' })
                 let temp_skills = skills.filter(skill => skill.selected)
-                for(let i = 0; i < temp_skills.length - 5; i++){
-                    if(skills[i].selected){
-                        skills[i].selected = false;
-                        break;
+                for (let i = 0; i < temp_skills.length - 5; i++) {
+                    if (skills[i].selected) {
+                        skills[i].selected = false
+                        break
                     }
                 }
-                let new_values = temp_skills.filter(skill => skill.selected).map(skill => {return {
-                    id: skill.id,
-                    name: skill.skill_name
-                }})
+                let new_values = temp_skills
+                    .filter(skill => skill.selected)
+                    .map(skill => {
+                        return {
+                            id: skill.id,
+                            name: skill.skill_name
+                        }
+                    })
                 setValue('skills', [...new_values])
-                setSkills(temp_skills);
+                setSkills(temp_skills)
             }
         }
-    }, [skills]);
+    }, [skills])
+
+    useEffect(() => {
+        let [values] = storagedForms
+        if (values) {
+            Object.keys(values).forEach((key: any) => {
+                // delete key.banner_url
+                if (key === 'banner_url') delete values[key]
+                setValue(key, values[key])
+            })
+        }
+    }, [])
 
     return (
         <RegisterContainer>
-            <Steps {...step_prop}/>
+            <Steps {...step_prop} />
         </RegisterContainer>
     )
 }

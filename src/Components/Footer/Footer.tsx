@@ -1,9 +1,7 @@
-import React, { useContext } from 'react'
 import { All } from './style'
 
 import * as AiIcons from 'react-icons/ai'
 import icon from '../../Assets/Logos/icon-comp.png'
-import { ThemeContext } from '@/providers/Theme'
 
 export default function Footer() {
     return (
@@ -14,22 +12,24 @@ export default function Footer() {
                 <div className='containerFooter'>
                     <div className='socialMedia'>
                         <p className='social-media'>Guilherme Iuri de Barros</p>
-                        <a
-                            href='https://www.linkedin.com/in/guilherme-iuri-de-barros/'
-                            target='_blank'
-                            className='linkedinLink'
-                        >
-                            <AiIcons.AiFillLinkedin />
-                        </a>
-                        <a href='https://www.instagram.com/eu.guilhermeiuri' target='_blank'>
-                            <AiIcons.AiOutlineInstagram />
-                        </a>
-                        <a href='https://www.twitter.com/GuilIuriDev' target='_blank'>
-                            <AiIcons.AiOutlineTwitter />
-                        </a>
-                        <a href='https://github.com/guiliuri13' target='_blank'>
-                            <AiIcons.AiOutlineGithub />
-                        </a>
+                        <div className='icons-row'>
+                            <a
+                                href='https://www.linkedin.com/in/guilherme-iuri-de-barros/'
+                                target='_blank'
+                                className='linkedinLink'
+                            >
+                                <AiIcons.AiFillLinkedin />
+                            </a>
+                            <a href='https://www.instagram.com/eu.guilhermeiuri' target='_blank'>
+                                <AiIcons.AiOutlineInstagram />
+                            </a>
+                            <a href='https://www.twitter.com/GuilIuriDev' target='_blank'>
+                                <AiIcons.AiOutlineTwitter />
+                            </a>
+                            <a href='https://github.com/guiliuri13' target='_blank'>
+                                <AiIcons.AiOutlineGithub />
+                            </a>
+                        </div>
                     </div>
                     <div className='socialMedia'>
                         <p className='social-media'>José Manoel Sanches Malassise</p>
