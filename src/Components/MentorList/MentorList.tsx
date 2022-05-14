@@ -24,7 +24,7 @@ export default function MentorList() {
 
     return (
         <List>
-            {!isLoading ? (
+            {isLoading ? (
                 <>
                     <h1>Escolha seu mentor:</h1>
                     <br></br>
