@@ -21,6 +21,7 @@
         "i": "^0.3.7",
         "npm": "^8.5.1",
         "react": "^17.0.0",
+        "react-device-detect": "^2.2.2",
         "react-dom": "^17.0.0",
         "react-hook-form": "^7.29.0",
         "react-icons": "^4.3.1",
@@ -33,10 +34,10 @@
         "yup": "^0.32.11"
     },
     "devDependencies": {
+        "@types/axios": "^0.14.0",
         "@types/node": "^14.14.31",
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",
-        "@types/axios": "^0.14.0",
         "@types/react-input-mask": "^3.0.1",
         "@types/styled-components": "^5.1.23",
         "@vitejs/plugin-react": "^1.0.1",
