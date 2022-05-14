@@ -60,11 +60,32 @@ export const All = styled.div`
             align-items: flex-start;
             width: 80%;
             display: flex;
+            flex-direction: row;
             justify-content: space-between;
-            align-items: center;
+            aside{
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                gap: 0.3em;
+            }
             a.notRegistered {
                 font-size: 0.9rem;
                 border: none;
+                outline: none;
+                text-decoration: under;
+                cursor: pointer;
+                padding: none;
+                font-weight: 400;
+                margin: 0;
+                background-color: transparent;
+                & b{
+                    text-decoration: underline;
+                }
+            }
+            a.forgotPassword{
+                font-size: 0.9rem;
+                border: none;
+                text-align: right;
                 outline: none;
                 text-decoration: under;
                 cursor: pointer;
