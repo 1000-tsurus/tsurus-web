@@ -16,6 +16,7 @@ const TextInput: ForwardRefRenderFunction<HTMLInputElement, TextInputProps> = (
     { is_optional, label, validator, onChange, onBlur, errors, mask, value, max_length, ...rest },
     ref
 ) => {
+    console.log(is_optional, label, validator, onChange, onBlur, errors, mask, value, max_length, rest)
     const handleKeyUp = useCallback(
             (e: React.ChangeEvent<HTMLInputElement>) => {
                 if (mask === 'cpf') {
