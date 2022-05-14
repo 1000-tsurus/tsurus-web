@@ -10,7 +10,9 @@ export const darkTheme = {
         background2: '#434a63',
         destaque: '#707894',
         white: '#000',
-        black: '#fff'
+        black: '#fff',
+        absolute_white: '#fff',
+        absolute_black: '#000'
     }
 }
 
@@ -26,6 +28,8 @@ export const lightTheme = {
         background2: '#c1c1c7',
         destaque: '#ababb3',
         white: '#fff',
-        black: '#000'
+        black: '#000',
+        absolute_white: '#fff',
+        absolute_black: '#000'
     }
 }
