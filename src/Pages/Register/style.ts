@@ -1,41 +1,38 @@
-import styled, {keyframes} from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
-export const RegisterContainer = styled.div`
-
-
-`;
+export const RegisterContainer = styled.div``
 
 export const StepContainer = styled.div`
     height: 100%;
-    div.row_error{
+    div.row_error {
         margin-top: 10px;
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        color: ${({theme}) => theme.colors.danger};
+        color: ${({ theme }) => theme.colors.danger};
         gap: 5px;
     }
-    section.user_infos{
+    section.user_infos {
         height: 100%;
         display: grid;
         grid-template-columns: 1fr 1fr;
         align-items: center;
         gap: 2.5%;
-        aside.first_left{
+        aside.first_left {
             height: 80%;
             display: grid;
             align-items: center;
-            div.user_infos_row{
+            div.user_infos_row {
                 height: fit-content;
                 width: 100%;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                label{
+                label {
                     margin-bottom: 15px;
                     font-weight: 700;
                 }
-                input.the_input{
+                input.the_input {
                     font-family: 'Montserrat', sans-serif;
                     width: 80%;
                     padding: 7px 5px;
@@ -45,21 +42,21 @@ export const StepContainer = styled.div`
                 }
             }
         }
-        aside.first_right{
+        aside.first_right {
             height: 70%;
             display: grid;
             align-items: center;
-            div.user_infos_row{
+            div.user_infos_row {
                 height: fit-content;
                 width: 100%;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                label{
+                label {
                     margin-bottom: 15px;
                     font-weight: 700;
                 }
-                .the_input{
+                .the_input {
                     font-family: 'Montserrat', sans-serif;
                     width: 80%;
                     padding: 7px 5px;
@@ -68,47 +65,47 @@ export const StepContainer = styled.div`
                     outline: none;
                 }
             }
-            div.phone_type_box{
+            div.phone_type_box {
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
                 margin-top: 15px;
-                div.check_row{
+                div.check_row {
                     display: flex;
                     flex-direction: row;
                     align-items: center;
                     gap: 5px;
-                    input{
+                    input {
                     }
-                    span{
+                    span {
                         padding: 0 !important;
-                        font-size: .9rem;
+                        font-size: 0.9rem;
                         font-family: 'Roboto', sans-serif;
                     }
                 }
             }
         }
     }
-    section.life_infos{
+    section.life_infos {
         height: 100%;
         display: grid;
         grid-template-columns: 1fr 1fr;
         align-items: center;
         gap: 2.5%;
-        aside.sec_left{
+        aside.sec_left {
             display: flex;
             flex-direction: column;
-            gap: 9rem;
-            div.occ_row{
+            gap: 0rem;
+            div.occ_row {
                 height: fit-content;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                label{
+                label {
                     margin-bottom: 15px;
                     font-weight: 700;
                 }
-                input.the_input{
+                input.the_input {
                     font-family: 'Montserrat', sans-serif;
                     width: 80%;
                     padding: 7px 5px;
@@ -118,19 +115,19 @@ export const StepContainer = styled.div`
                 }
             }
         }
-        aside.sec_right{
+        aside.sec_right {
             display: flex;
             flex-direction: column;
             gap: calc(7rem - 80px);
-            div.occ_row{
+            div.occ_row {
                 height: fit-content;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
-                button.add_skill_button{
+                button.add_skill_button {
                     background-color: transparent;
-                    border: 2px solid ${({theme}) => theme.colors.text};
-                    color: ${({theme}) => theme.colors.text};
+                    border: 2px solid ${({ theme }) => theme.colors.text};
+                    color: ${({ theme }) => theme.colors.text};
                     outline: none;
                     width: fit-content;
                     padding: 5px 10px;
@@ -139,11 +136,11 @@ export const StepContainer = styled.div`
                     font-family: 'Montserrat', sans-serif;
                     cursor: pointer;
                 }
-                label{
+                label {
                     margin-bottom: 15px;
                     font-weight: 700;
                 }
-                input.the_input{
+                input.the_input {
                     font-family: 'Montserrat', sans-serif;
                     width: 80%;
                     padding: 7px 5px;
@@ -151,7 +148,7 @@ export const StepContainer = styled.div`
                     border: none;
                     outline: none;
                 }
-                textarea{
+                textarea {
                     font-family: 'Montserrat', sans-serif;
                     width: 80%;
                     max-width: 80%;
@@ -165,4 +162,4 @@ export const StepContainer = styled.div`
             }
         }
     }
-`;
+`

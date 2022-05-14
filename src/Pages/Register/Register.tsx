@@ -234,7 +234,7 @@ export default function Register() {
         if (isValid) {
             steps[activeStep].isValid = true
         }
-    }, [])
+    }, [activeStep, storagedForms])
 
     useEffect(() => {
         setValue('is_wpp', phone_types.is_wpp)
@@ -252,7 +252,12 @@ export default function Register() {
                     <section className='user_infos'>
                         <aside className='first_left'>
                             <div className='user_infos_row'>
-                                <TextInput label='Nome' className='the_input' type='text' {...register('name')} />
+                                <TextInput
+                                    label='Nome'
+                                    className='the_input'
+                                    type='text'
+                                    {...register('name')}
+                                />
                                 {errors.name && (
                                     <div className='row_error'>
                                         <FiIcons.FiAlertCircle />
@@ -310,6 +315,7 @@ export default function Register() {
                                                     is_wpp: !phone_types.is_wpp
                                                 })
                                             }
+                                            ref={register}
                                         />
                                         <span>Este número é WhatsApp</span>
                                     </div>
@@ -322,6 +328,7 @@ export default function Register() {
                                                     is_public: !phone_types.is_public
                                                 })
                                             }
+                                            ref={register}
                                         />
                                         <span>Este número pode ser visualizado por usuários não registrados</span>
                                     </div>
