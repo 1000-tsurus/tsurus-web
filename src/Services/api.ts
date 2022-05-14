@@ -2,7 +2,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 
 export const api = axios.create({
-    baseURL: 'http://10.0.5.33:3333'
+    baseURL: process.env.API_URL
 })
 
 export const configApi = () => {
