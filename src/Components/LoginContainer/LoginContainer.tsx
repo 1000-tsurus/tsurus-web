@@ -47,9 +47,14 @@ export default function LoginContainer() {
                     <button type='submit' className='btn' onClick={handleSubmit} disabled={!(!!password && !!email)}>
                         {loading ? <CircularProgress size={12} style={{ color: '#fff' }} /> : 'Entrar'}
                     </button>
-                    <Link className='notRegistered' to='/register'>
-                        Não é registrado ainda? <b>Registre-se</b>
-                    </Link>
+                    <aside>
+                        <Link className='notRegistered' to='/register'>
+                            Não é registrado ainda? <b>Registre-se</b>
+                        </Link>
+                        <Link className='forgotPassword' to='/forgot-password'>
+                            <b>Esqueci minha senha</b>
+                        </Link>
+                    </aside>
                 </div>
             </div>
             <div className='imgContainer'>{/* <span>Image</span> */}</div>
