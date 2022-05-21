@@ -252,12 +252,7 @@ export default function Register() {
                     <section className='user_infos'>
                         <aside className='first_left'>
                             <div className='user_infos_row'>
-                                <TextInput
-                                    label='Nome'
-                                    className='the_input'
-                                    type='text'
-                                    {...register('name')}
-                                />
+                                <TextInput label='Nome' className='the_input' type='text' {...register('name')} />
                                 {errors.name && (
                                     <div className='row_error'>
                                         <FiIcons.FiAlertCircle />
