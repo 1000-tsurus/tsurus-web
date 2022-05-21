@@ -1,14 +1,19 @@
 import React, { useState } from 'react'
 import ForgotPasswordContainer from '../../Components/ForgotPasswordContainer/ForgotPasswordContainer'
+import ReactCodeInput from '../../Components/ForgotPasswordContainer/ReactCodeInput/ReactCodeInput'
 
 export default function ForgotPassword() {
     const [step, setStep] = useState(0)
+
+    const handleSubmit = () => {
+        setStep(1)
+    }
     switch (step) {
         case 0:
-            return <ForgotPasswordContainer />
+            return <ForgotPasswordContainer onSubmit={handleSubmit} />
 
         case 1:
-            return <div>1</div>
+            return <ReactCodeInput />
 
         case 2:
             return <div>2</div>
