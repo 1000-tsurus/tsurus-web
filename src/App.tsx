@@ -4,7 +4,6 @@ import { Route, Routes } from 'react-router-dom'
 
 import Header from '@/Components/Header'
 import { GlobalStyle } from './Styles/GlobalStyle'
-import { ThemeContext } from './providers/Theme'
 import Footer from './Components/Footer/Footer'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -31,7 +30,7 @@ const App = () => {
         case true:
             return (
                 <div>
-                    Nosso app Mobile ainda está em desevolvimento, por favor aguarde nosso time de desenvolvimento😁
+                    Nosso app Mobile ainda está em desevolvimento, por favor aguarde nosso time de desenvolvimento 😁
                 </div>
             )
         default:

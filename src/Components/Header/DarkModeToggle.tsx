@@ -7,6 +7,7 @@ import { Ball, Checkbox, Label, MoonIcon, Root, SunIcon } from './style'
 
 const DarkModeToggle = () => {
     const { selectedTheme, toggleTheme } = useContext(ThemeContext)
+    console.log('🚀 ~ file: DarkModeToggle.tsx ~ line 10 ~ DarkModeToggle ~ selectedTheme', selectedTheme)
     return (
         <Root>
             <Checkbox

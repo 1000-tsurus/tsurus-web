@@ -7,16 +7,16 @@ import * as GiIcons from 'react-icons/gi'
 import * as yup from 'yup'
 import Steps from '@/Components/Steps/Steps'
 import { useForm } from 'react-hook-form'
-import { useLocalStorage } from '@caldwell619/react-hooks'
 import { RegisterContainer, StepContainer } from './style'
 import { Checkbox, Input, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, Skeleton } from '@mui/material'
 import { api } from '@/Services/api'
-import { ThemeContext } from '@/providers/Theme'
+import { ThemeContext } from '@/Providers/Theme'
 import CreateSkillModal from '@/Components/CreateSkillModal/CreateSkillModal'
 import * as FiIcons from 'react-icons/fi'
 import { toast } from 'react-toastify'
 import TextInput from '@/Components/CustomTextInput'
 import CustomCheckbox from '@/Components/CustomCheckBox'
+import { useLocalStorage } from '@/Hooks/useLocalStorage'
 
 const defaultValues: Partial<FormValues> = {
     name: '',
@@ -120,7 +120,7 @@ export default function Register() {
             shouldUnregister: false,
             defaultValues,
             resolver: yupResolver(currentValidationSchema),
-            mode: 'all'
+            mode: 'onChange'
         }),
         {
             reset,
@@ -145,6 +145,13 @@ export default function Register() {
         },
         handlePrevStep = () => {
             setActiveStep(prevActiveStep => prevActiveStep - 1)
+
+            setStoragedForms([
+                {
+                    ...getValues()
+                }
+            ])
+            console.log('🚀 ~ file: Register.tsx ~ line 151 ~ Register ~ ...getValues()', getValues())
         },
         handleSelectStep = (step_id: number) => {
             setActiveStep(step_id)
@@ -215,16 +222,28 @@ export default function Register() {
     }, [skills])
 
     useEffect(() => {
-        console.log(storagedForms)
-        let [values] = !!storagedForms.length
-            ? storagedForms
-            : JSON.parse(localStorage.getItem('mentorRegister') || '{}')
-        console.log('🚀 ~ file: Register.tsx ~ line 491 ~ useEffect ~ values', values)
+        // console.log(storagedForms)
+        // let [values] = storagedForms
+        // console.log('🚀 ~ file: Register.tsx ~ line 491 ~ useEffect ~ values', values)
+        // if (values) {
+        //     Object.keys(values).forEach((key: any) => {
+        //         console.log('🚀 ~ ', key, values[key])
+        //         // delete key.banner_url
+        //         if (key === 'banner_url') delete values[key]
+        //         setValue(key, values[key])
+        //     })
+        // }
+
+        // values = getValues()
+        // const isValid = currentValidationSchema.isValidSync(values)
+        // if (isValid) {
+        //     steps[activeStep].isValid = true
+        // }
+        // Verificando se já possui dados salvos no localStorage
+        // caso existir será preenchido no formulário
+        let [values] = storagedForms
         if (values) {
             Object.keys(values).forEach((key: any) => {
-                console.log('🚀 ~ ', key, values[key])
-                // delete key.banner_url
-                if (key === 'banner_url') delete values[key]
                 setValue(key, values[key])
             })
         }
@@ -252,13 +271,13 @@ export default function Register() {
                     <section className='user_infos'>
                         <aside className='first_left'>
                             <div className='user_infos_row'>
-                                <TextInput label='Nome' className='the_input' type='text' {...register('name')} />
-                                {errors.name && (
-                                    <div className='row_error'>
-                                        <FiIcons.FiAlertCircle />
-                                        <span className='error'>{errors.name.message}</span>
-                                    </div>
-                                )}
+                                <TextInput
+                                    {...register('name')}
+                                    errors={errors.name}
+                                    label='Nome'
+                                    className='the_input'
+                                />
+                                <h1>{getValues('name')}</h1>
                             </div>
                             <div className='user_infos_row'>
                                 <TextInput
