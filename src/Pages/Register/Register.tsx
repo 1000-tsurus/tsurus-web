@@ -222,23 +222,6 @@ export default function Register() {
     }, [skills])
 
     useEffect(() => {
-        // console.log(storagedForms)
-        // let [values] = storagedForms
-        // console.log('🚀 ~ file: Register.tsx ~ line 491 ~ useEffect ~ values', values)
-        // if (values) {
-        //     Object.keys(values).forEach((key: any) => {
-        //         console.log('🚀 ~ ', key, values[key])
-        //         // delete key.banner_url
-        //         if (key === 'banner_url') delete values[key]
-        //         setValue(key, values[key])
-        //     })
-        // }
-
-        // values = getValues()
-        // const isValid = currentValidationSchema.isValidSync(values)
-        // if (isValid) {
-        //     steps[activeStep].isValid = true
-        // }
         // Verificando se já possui dados salvos no localStorage
         // caso existir será preenchido no formulário
         let [values] = storagedForms
