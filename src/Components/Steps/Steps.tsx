@@ -6,16 +6,15 @@ import StepLabel from '@mui/material/StepLabel'
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector'
 import { StepIconProps } from '@mui/material/StepIcon'
 import { RegisterContainer } from './style'
-import { ThemeContext } from '@/Providers/Theme'
+import { ThemeContext } from '@/providers'
 import * as FiIcons from 'react-icons/fi'
-import { darkTheme, lightTheme } from '@/Styles/theme'
-import { red } from '@mui/material/colors'
 
 type Props = {
     steps: {
         title: string
         description: string
         icon: React.ReactElement
+        id: number
         content: JSX.Element
     }[]
     step: number
@@ -136,7 +135,9 @@ export default function Steps({
                             Excluir
                         </div>
                     )}
-                    {steps[step].content}
+                    {steps.map(s => {
+                        return step === s.id && s.content
+                    })}
                 </div>
 
                 <footer>

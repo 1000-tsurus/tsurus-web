@@ -28,12 +28,10 @@ const TextInput: ForwardRefRenderFunction<HTMLInputElement, TextInputProps> = (
             [mask]
         ),
         handleOnChange = (e: any) => {
-            console.log('🚀 ~ ', e)
             if (mask) handleKeyUp(e)
             if (onChange) onChange(e)
         }
 
-    console.log('🚀 ~ ', value)
     return (
         <ContainerTextInput>
             <label className='the-label'>

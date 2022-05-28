@@ -6,11 +6,11 @@ import * as RiIcons from 'react-icons/ri'
 import * as GiIcons from 'react-icons/gi'
 import * as yup from 'yup'
 import Steps from '@/Components/Steps/Steps'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { RegisterContainer, StepContainer } from './style'
 import { Checkbox, Input, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, Skeleton } from '@mui/material'
 import { api } from '@/Services/api'
-import { ThemeContext } from '@/Providers/Theme'
+import { ThemeContext } from '@/providers'
 import CreateSkillModal from '@/Components/CreateSkillModal/CreateSkillModal'
 import * as FiIcons from 'react-icons/fi'
 import { toast } from 'react-toastify'
@@ -84,7 +84,7 @@ const validationSchema = [
     })
 ]
 
-export default function Register() {
+export const Register = () => {
     const [activeStep, setActiveStep] = useState(0),
         [skills, setSkills] = useState<
             | {
@@ -120,7 +120,7 @@ export default function Register() {
             shouldUnregister: false,
             defaultValues,
             resolver: yupResolver(currentValidationSchema),
-            mode: 'onChange'
+            mode: 'all'
         }),
         {
             reset,
@@ -128,7 +128,8 @@ export default function Register() {
             trigger,
             register,
             formState: { errors },
-            setValue
+            setValue,
+            watch
         } = methods,
         handleNextStep = async () => {
             const isStepValid = await trigger()
@@ -144,14 +145,17 @@ export default function Register() {
             }
         },
         handlePrevStep = () => {
+            const formValues = getValues()
+
             setActiveStep(prevActiveStep => prevActiveStep - 1)
 
-            setStoragedForms([
-                {
-                    ...getValues()
+            Object.values(formValues).forEach(value => {
+                if (value && value.length) {
+                    setStoragedForms([{ ...formValues }])
                 }
-            ])
-            console.log('🚀 ~ file: Register.tsx ~ line 151 ~ Register ~ ...getValues()', getValues())
+            })
+
+            console.log('formValues', formValues)
         },
         handleSelectStep = (step_id: number) => {
             setActiveStep(step_id)
@@ -248,6 +252,7 @@ export default function Register() {
             title: 'Suas informações de cadastro',
             description: 'Preencha as informações de cadastro',
             icon: <AiIcons.AiOutlineUser />,
+            id: 0,
             isValid: false,
             content: (
                 <StepContainer>
@@ -258,6 +263,7 @@ export default function Register() {
                                     {...register('name')}
                                     errors={errors.name}
                                     label='Nome'
+                                    name='name'
                                     className='the_input'
                                 />
                                 <h1>{getValues('name')}</h1>
@@ -340,6 +346,7 @@ export default function Register() {
             title: 'Algumas perguntinhas',
             description: 'Preencha as informações de cadastro',
             icon: <RiIcons.RiQuestionAnswerLine />,
+            id: 1,
             isValid: false,
             content: (
                 <StepContainer>
@@ -349,6 +356,7 @@ export default function Register() {
                                 <TextInput
                                     label='Qual sua ocupação (cargo) atualmente?'
                                     className='the_input'
+                                    id='occupation'
                                     type='text'
                                     {...register('occupation')}
                                 />
@@ -501,6 +509,7 @@ export default function Register() {
             title: 'Quase lá...',
             description: 'Preencha as informações de cadastro',
             icon: <GiIcons.GiFinishLine />,
+            id: 2,
             /*
                 to_help
                 icon_url

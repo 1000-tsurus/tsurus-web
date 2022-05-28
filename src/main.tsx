@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 
 import App from './App'
 import { BrowserRouter } from 'react-router-dom'
-import { ThemeContextProvider } from '@/Providers/Theme'
+import { ThemeContextProvider } from '@/providers'
 
 ReactDOM.render(
     <StrictMode>

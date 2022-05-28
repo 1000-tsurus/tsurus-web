@@ -14,7 +14,7 @@ const ForgotPassword = React.lazy(() =>
     import('./Pages/ForgotPassword/ForgotPassword').then(module => ({ default: module.default }))
 )
 const User = React.lazy(() => import('./Pages/User/User').then(module => ({ default: module.default })))
-const Register = React.lazy(() => import('./Pages/Register/Register').then(module => ({ default: module.default })))
+const Register = React.lazy(() => import('./Pages/Register/Register').then(module => ({ default: module.Register })))
 const Home = React.lazy(() => import('./Pages/Home/Home').then(module => ({ default: module.default })))
 
 const Root = styled.div`

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { All } from './style'
 import pictureProfile from '../../Assets/img/profile-picture-card.jpg'
-import { ThemeContext } from '@/Providers'
+import { ThemeContext } from '@/providers'
 import { Link } from 'react-router-dom'
 
 export default function Card({ user }: any) {

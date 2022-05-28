@@ -2,12 +2,11 @@ import { useContext } from 'react'
 import DarkModeIcon from '@mui/icons-material/Brightness3'
 import LightModeIcon from '@mui/icons-material/WbSunny'
 
-import { ThemeContext } from '@/Providers'
 import { Ball, Checkbox, Label, MoonIcon, Root, SunIcon } from './style'
+import { ThemeContext } from '@/providers'
 
 const DarkModeToggle = () => {
     const { selectedTheme, toggleTheme } = useContext(ThemeContext)
-    console.log('🚀 ~ file: DarkModeToggle.tsx ~ line 10 ~ DarkModeToggle ~ selectedTheme', selectedTheme)
     return (
         <Root>
             <Checkbox
