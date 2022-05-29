@@ -8,6 +8,7 @@ import { StepIconProps } from '@mui/material/StepIcon'
 import { RegisterContainer } from './style'
 import { ThemeContext } from '@/providers'
 import * as FiIcons from 'react-icons/fi'
+import { CircularProgress } from '@mui/material'
 
 type Props = {
     steps: {
@@ -18,6 +19,7 @@ type Props = {
         content: JSX.Element
     }[]
     step: number
+    isLoading: boolean
     onSubmit: () => void
     setStep: (step: number) => void
     handleClearForms?: () => void
@@ -30,6 +32,7 @@ export default function Steps({
     steps,
     step,
     setStep,
+    isLoading,
     onSubmit,
     handleClearForms,
     handleNextStep,
@@ -149,8 +152,12 @@ export default function Steps({
                             Próximo
                         </button>
                     ) : (
-                        <button onClick={onSubmit} className='next'>
-                            Finalizar
+                        <button
+                            onClick={onSubmit}
+                            style={{ pointerEvents: isLoading ? 'none' : 'unset' }}
+                            className='next'
+                        >
+                            {isLoading ? <CircularProgress size={30} style={{ color: '#fff' }} /> : 'Finalizar'}
                         </button>
                     )}
                 </footer>

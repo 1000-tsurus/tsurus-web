@@ -3144,6 +3144,11 @@
   "resolved" "https://registry.npmjs.org/camelize/-/camelize-1.0.0.tgz"
   "version" "1.0.0"
 
+"camsis-fonts@^1.0.10":
+  "integrity" "sha512-S2lkarHDaa+JNGnaWfAr/aaM7nL419ZvyVODQFhOzwiylcygQSjWCknzxfQ7+wukQVuPnKnabaq6GgDYnpH74A=="
+  "resolved" "https://registry.npmjs.org/camsis-fonts/-/camsis-fonts-1.0.10.tgz"
+  "version" "1.0.10"
+
 "caniuse-api@^3.0.0":
   "integrity" "sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw=="
   "resolved" "https://registry.npmjs.org/caniuse-api/-/caniuse-api-3.0.0.tgz"
@@ -9067,6 +9072,11 @@
   "integrity" "sha512-c3zayb8/kWWpycWYg87P71E1S1ZL6b6IJxfb5fvsUgsf0S2MVGaDhDXXjDMpdCpfWXqptc+4mXwmiy1ypXqRAA=="
   "resolved" "https://registry.npmjs.org/tryer/-/tryer-1.0.1.tgz"
   "version" "1.0.1"
+
+"ts-luxon@^3.0.1":
+  "integrity" "sha512-mjvrymzYEjC2zJ8jaGAzjw4lAoSlsuz1yZ8FdfVXwsAGFU2SxzREz4rHMWhMzEr6vMLx/wI41hi7khAnVvGFlw=="
+  "resolved" "https://registry.npmjs.org/ts-luxon/-/ts-luxon-3.2.0.tgz"
+  "version" "3.2.0"
 
 "tsconfig-paths@^3.12.0":
   "integrity" "sha512-e5adrnOYT6zqVnWqZu7i/BQ3BnhzvGbjEjejFXO20lKIKpwTaupkCPgEfv4GZK1IBciJUEhYs3J3p75FdaTFVg=="

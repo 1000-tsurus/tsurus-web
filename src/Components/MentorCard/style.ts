@@ -27,6 +27,7 @@ export const All = styled.div`
             border-radius: 20px;
             object-fit: contain;
             height: 100%;
+            background-color: ${({ theme }) => theme.colors.absolute_white};
         }
         aside{
             display: flex;
