@@ -58,14 +58,13 @@ export const AuthProvider = ({ children }: Props) => {
         }
     }, [])
 
-    const signIn = useCallback(async ({ email, cpf, password }) => {
+    const signIn = useCallback(async ({ email, password }) => {
         try {
             setLoading(true)
 
             const response = await api.post<any>('auth/login', {
                 email,
                 password,
-                cpf
             })
 
             if (response.data) {

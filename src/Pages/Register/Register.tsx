@@ -264,13 +264,34 @@ export const Register = () => {
                 })
         },
         handleClearForms = () => {
-            set_phone_types({
-                is_wpp: false,
-                is_public: false
+            setCancelOrConfirmModal({
+                ...cancelOrConfirmModal,
+                is_open: true,
+                title: 'Deseja limpar todos os dados?',
+                subtitle: '',
+                input_icon: 'icon-delete',
+                confirm_text: 'Sim',
+                cancel_text: 'Não',
+                onCancel: () => {
+                    setCancelOrConfirmModal({
+                        ...cancelOrConfirmModal,
+                        is_open: false
+                    })
+                },
+                onConfirm: () => {
+                    set_phone_types({
+                        is_wpp: false,
+                        is_public: false
+                    })
+                    setStoragedForms([])
+                    reset()
+                    setActiveStep(0)
+                    setCancelOrConfirmModal({
+                        ...cancelOrConfirmModal,
+                        is_open: false
+                    })
+                }
             })
-            setStoragedForms([])
-            reset()
-            setActiveStep(0)
         }
 
     useEffect(() => {
