@@ -1,38 +1,18 @@
-import { api } from '@/Services/api'
+import { useAuth } from '@/Hooks/auth'
 import { CircularProgress } from '@mui/material'
-import React, { createElement, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { All } from './style'
+import LoginIlustration from '../../Assets/ilustrations/login.svg'
 
 export default function LoginContainer() {
     const [email, setEmail] = useState(''),
         [password, setPassword] = useState(''),
         [loading, setLoading] = useState(false),
-        navigator = useNavigate(),
+        { signIn } = useAuth(),
         handleSubmit = () => {
             setLoading(true)
-            api.post('auth/login', {
-                email,
-                password
-            })
-                .then(res => {
-                    for (let key in res.data) {
-                        localStorage.setItem(
-                            `Tsurus@${key}`,
-                            typeof res.data[key] === 'object' ? JSON.stringify(res.data[key]) : res.data[key]
-                        )
-                    }
-                    navigator('/home')
-                    toast.success('Login realizado com sucesso!', { theme: 'colored' })
-                })
-                .catch(err => {
-                    toast.error('Campo senha ou email inválido(s)', { theme: 'colored' })
-                    console.log(err)
-                })
-                .finally(() => {
-                    setLoading(false)
-                })
+            signIn({ email, password })
         }
 
     return (
@@ -57,7 +37,10 @@ export default function LoginContainer() {
                     </aside>
                 </div>
             </div>
-            <div className='imgContainer'>{/* <span>Image</span> */}</div>
+            <div className='imgContainer'>
+                {/* <span>Image</span> */}
+                <img src={LoginIlustration}/>
+            </div>
         </All>
     )
 }

@@ -24,10 +24,21 @@ export const All = styled.header`
     div.right{
         display: flex;
         align-items: center;
+        place-content: center;
+        flex-direction: row;
+        justify-content: flex-end;
+        gap: .5rem;
         a{
             display: flex;
             justify-content: space-around;
             align-items: center;
+        }
+        div.logOut{
+            display: grid;
+            place-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-left: .7rem;
         }
         svg.icon{
             border-radius: 50%;

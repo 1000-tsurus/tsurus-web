@@ -22,6 +22,7 @@ import { DateInput } from '@/Components/CustomDateInput'
 import { useNavigate } from 'react-router-dom'
 import { MemoizedOnlyConfirmModal, OnlyConfirmModalProps } from '@/Components/ConfirmModal/OnlyConfirmModal'
 import { CancelOrConfirmModal, CancelOrConfirmModalProps } from '@/Components/ConfirmModal/CancelOrConfirmModal'
+import { useAuth } from '@/Hooks/auth'
 
 const defaultValues: Partial<FormValues> = {
     name: '',
@@ -117,6 +118,7 @@ export const Register = () => {
             is_wpp: false,
             is_public: false
         }),
+        { user, signIn } = useAuth(),
         { selectedTheme } = useContext(ThemeContext),
         currentValidationSchema = validationSchema[activeStep],
         [storagedForms, setStoragedForms] = useLocalStorage<any[]>('mentorRegister', []),
@@ -216,46 +218,10 @@ export const Register = () => {
             }
             api.post('user/store', final_data)
                 .then(response => {
-                    console.log(response.data)
-                    api.post('auth/login', {
+                    signIn({
                         email: values.email,
                         password: values.password
                     })
-                        .then(res => {
-                            handleClearForms()
-                            for (let key in res.data) {
-                                localStorage.setItem(
-                                    `Tsurus@${key}`,
-                                    typeof res.data[key] === 'object' ? JSON.stringify(res.data[key]) : res.data[key]
-                                )
-                            }
-                            let modal_props: OnlyConfirmModalProps = {
-                                ...onlyConfirmModal,
-                                title: 'Cadastro realizado com sucesso!',
-                                subtitle: 'Você foi cadastrado e ja está autenticado!',
-                                input_icon: 'icon-user-add',
-                                confirm_text: 'OK',
-                                type: 'info',
-                                is_open: true
-                            }
-                            setOnlyConfirmModal({
-                                ...modal_props,
-                                onConfirm: () => {
-                                    setOnlyConfirmModal({
-                                        ...modal_props,
-                                        is_open: false
-                                    })
-                                    navigator('/home', { replace: true })
-                                }
-                            })
-                        })
-                        .catch(err => {
-                            toast.error('Erro ao logar no usuário criado', { theme: 'colored' })
-                            console.log(err)
-                        })
-                        .finally(() => {
-                            setIsLoading(false)
-                        })
                 })
                 .catch(err => {
                     console.log(err)
@@ -382,12 +348,14 @@ export const Register = () => {
     }, [watch('to_help')])
 
     useEffect(() => {
-        if (localStorage.getItem('Tsurus@user')) {
+        if (localStorage.getItem('Tsurus@user')
+            || !(Object.keys(user).length === 0 && user.constructor === Object)
+        ){
             setCancelOrConfirmModal({
                 ...cancelOrConfirmModal,
                 is_open: true,
                 title: 'Você já está logado',
-                confirm_text: 'Deslogar e criar outro usuãrio',
+                confirm_text: 'Deslogar e criar outro usuário',
                 cancel_text: 'Cancelar',
                 onCancel: () => {
                     navigator('/home', { replace: true })

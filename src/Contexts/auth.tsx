@@ -45,8 +45,8 @@ export const AuthProvider = ({ children }: Props) => {
         location = useLocation()
 
     useEffect(() => {
-        const token = localStorage.getItem('@Tsurus:token')
-        const user = localStorage.getItem('@Tsurus:user')
+        const token = localStorage.getItem('@Tsurus:token'),
+            user = localStorage.getItem('@Tsurus:user')
 
         if (token && user) {
             setData({
@@ -94,7 +94,8 @@ export const AuthProvider = ({ children }: Props) => {
     }, [])
 
     const signOut = useCallback(async () => {
-        localStorage.clear()
+        localStorage.removeItem('@Tsurus:token')
+        localStorage.removeItem('@Tsurus:user')
 
         setData({} as User)
         navigate('/', { replace: true })
@@ -141,7 +142,7 @@ export const AuthProvider = ({ children }: Props) => {
     return (
         <AuthContext.Provider
             value={{
-                user: data.user,
+                user: data.user || {},
                 loading,
                 signIn,
                 signOut,

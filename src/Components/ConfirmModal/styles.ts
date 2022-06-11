@@ -7,8 +7,8 @@ export const ContainerConfirmButton = styled(motion.div)`
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 50rem;
-        max-width: 50rem;
+        width: 45rem;
+        max-width: 45rem;
         background-color: ${theme.colors.background};
         border-radius: 2rem;
         font-family: 'Montserrat', sans-serif;
@@ -16,7 +16,7 @@ export const ContainerConfirmButton = styled(motion.div)`
         ${theme.title === 'light' && css`
             box-shadow: 0px 2px 10px ${theme.colors.black}22;
         `}
-
+        outline: none;
         /* row */
         display: flex;
         flex-wrap: wrap;
@@ -26,7 +26,7 @@ export const ContainerConfirmButton = styled(motion.div)`
             display: flex;
             justify-content: center;
             i.the-icon{
-                font-size: 15rem;
+                font-size: 12rem;
                 color: ${theme.colors.success};
 
                 &::before {
@@ -82,7 +82,7 @@ export const ContainerConfirmButton = styled(motion.div)`
                     padding: 1rem;
                     width: 100%;
                     font-weight: 700;
-                    font-size: 1.2rem;
+                    font-size: 1rem;
                     cursor: pointer;
                     &.loading{
                         padding: 0.6rem;

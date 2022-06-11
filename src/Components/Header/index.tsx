@@ -4,19 +4,17 @@ import * as AiIcons from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 import DarkModeToggle from './DarkModeToggle'
 import { All } from './style'
+import { useAuth } from '@/Hooks/auth'
+import * as FiIcons from 'react-icons/fi'
 
 const Header = () => {
-    const [isLogged, setIsLogged] = useState(false),
-        [userName, setUserName] = useState<string | null>(),
+    const { user, signOut } = useAuth(),
+        [isLogged, setIsLogged] = useState(!(!user || Object.keys(user).length === 0 && user.constructor === Object)),
         isMobile = useMediaQuery('(max-width: 450px)')
 
     useEffect(() => {
-        let haveUser = localStorage.getItem('Tsurus@user')
-        if (haveUser) {
-            setIsLogged(true)
-            setUserName(JSON.parse(haveUser).full_name)
-        }
-    }, [])
+        setIsLogged(!(!user || Object.keys(user).length === 0 && user.constructor === Object))
+    }, [user])
 
     return (
         <All>
@@ -27,15 +25,20 @@ const Header = () => {
                     {!isMobile && (
                         <>
                             {isLogged ? (
-                                <p className='login'>
-                                    Olá, <strong> {userName || 'Usuário'}</strong>
+                                <p className='login' title='Deseja ir para a página do usuário?'>
+                                    Olá, <strong> {user.full_name || 'Usuário'}</strong>
                                 </p>
                             ) : (
-                                <p className='login sublimed'>Login</p>
+                                <p className='login sublimed' title='Deseja fazer Login?'>Login</p>
                             )}
                         </>
                     )}
                 </Link>
+                {isLogged && (
+                    <div className='logOut' title='Deseja deslogar?' onClick={signOut}>
+                        <FiIcons.FiLogOut/>
+                    </div>
+                )}
                 <Toolbar variant='dense' title='Muda de tema escuro para claro'>
                     <DarkModeToggle />
                 </Toolbar>

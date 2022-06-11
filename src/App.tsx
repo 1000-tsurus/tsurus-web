@@ -8,6 +8,8 @@ import Footer from './Components/Footer/Footer'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { isMobile } from 'react-device-detect'
+import { AuthProvider } from '@/Contexts/auth'
+import { MainRoutes } from '@/Routes'
 
 const Login = React.lazy(() => import('./Pages/Login/Login').then(module => ({ default: module.default })))
 const ForgotPassword = React.lazy(() =>
@@ -26,41 +28,7 @@ const Root = styled.div`
 `
 
 const App = () => {
-    switch (isMobile) {
-        case true:
-            return (
-                <div>
-                    Nosso app Mobile ainda está em desevolvimento, por favor aguarde nosso time de desenvolvimento 😁
-                </div>
-            )
-        default:
-            return (
-                <Root>
-                    <Header />
-                    <div
-                        style={{
-                            marginTop: '20px',
-                            minHeight: 'calc(100vh - 60px)'
-                        }}
-                    >
-                        <Suspense fallback={<div>Loading...</div>}>
-                            <Routes>
-                                <Route path='/' element={<Home />} />
-                                <Route path='/home' element={<Home />} />
-                                <Route path='/login' element={<Login />} />
-                                <Route path='/forgot-password' element={<ForgotPassword />} />
-                                <Route path='/register' element={<Register />} />
-                                <Route path='/user' element={<User />} />
-                                <Route path='/user/:id' element={<User />} />
-                            </Routes>
-                        </Suspense>
-                    </div>
-                    <Footer />
-                    <ToastContainer />
-                    <GlobalStyle />
-                </Root>
-            )
-    }
+    return <MainRoutes />
 }
 
 export default App
