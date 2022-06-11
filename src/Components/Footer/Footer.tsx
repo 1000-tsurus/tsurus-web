@@ -33,22 +33,24 @@ export default function Footer() {
                     </div>
                     <div className='socialMedia'>
                         <p className='social-media'>José Manoel Sanches Malassise</p>
-                        <a
-                            href='https://www.linkedin.com/in/jos%C3%A9-malassise-353380227/?originalSubdomain=br'
-                            target='_blank'
-                            className='linkedinLink2'
-                        >
-                            <AiIcons.AiFillLinkedin />
-                        </a>
-                        <a href='https://www.instagram.com/josemanoelsanches' target='_blank'>
-                            <AiIcons.AiOutlineInstagram />
-                        </a>
-                        <a href='#' target='_blank'>
-                            <AiIcons.AiOutlineTwitter />
-                        </a>
-                        <a href='https://www.github.com/zesanches' target='_blank'>
-                            <AiIcons.AiOutlineGithub />
-                        </a>
+                        <div className='icons-row'>
+                            <a
+                                href='https://www.linkedin.com/in/jos%C3%A9-malassise-353380227/?originalSubdomain=br'
+                                target='_blank'
+                                className='linkedinLink2'
+                            >
+                                <AiIcons.AiFillLinkedin />
+                            </a>
+                            <a href='https://www.instagram.com/josemanoelsanches' target='_blank'>
+                                <AiIcons.AiOutlineInstagram />
+                            </a>
+                            <a href='#' target='_blank'>
+                                <AiIcons.AiOutlineTwitter />
+                            </a>
+                            <a href='https://www.github.com/zesanches' target='_blank'>
+                                <AiIcons.AiOutlineGithub />
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
