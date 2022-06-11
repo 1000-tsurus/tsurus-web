@@ -8,12 +8,8 @@ import LoginIlustration from '../../Assets/ilustrations/login.svg'
 export default function LoginContainer() {
     const [email, setEmail] = useState(''),
         [password, setPassword] = useState(''),
-        [loading, setLoading] = useState(false),
-        { signIn } = useAuth(),
-        handleSubmit = () => {
-            setLoading(true)
-            signIn({ email, password })
-        }
+        { signIn, loading } = useAuth()
+        console.log("🚀 ~ file: LoginContainer.tsx ~ line 12 ~ LoginContainer ~ signIn", signIn)
 
     return (
         <All>
@@ -24,7 +20,7 @@ export default function LoginContainer() {
                 <label>Sua senha</label>
                 <input type='password' onChange={e => setPassword(e.target.value)} />
                 <div className='btn'>
-                    <button type='submit' className='btn' onClick={handleSubmit} disabled={!(!!password && !!email)}>
+                    <button type='submit' className='btn' onClick={() => signIn({ email, password })} disabled={!(!!password && !!email)}>
                         {loading ? <CircularProgress size={12} style={{ color: '#fff' }} /> : 'Entrar'}
                     </button>
                     <aside>
