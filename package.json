@@ -5,7 +5,7 @@
     "scripts": {
         "format": "prettier --write src",
         "lint": "eslint --ext .ts,.tsx src",
-        "dev": "vite --open",
+        "dev": "vite --open --host",
         "build": "tsc --noEmit && vite build",
         "analyze": "ANALYZE=true yarn build",
         "serve": "vite preview"

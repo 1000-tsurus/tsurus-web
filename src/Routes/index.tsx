@@ -8,6 +8,7 @@ import { isMobile } from 'react-device-detect'
 import { useAuth } from '@/Hooks/auth'
 import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
+import MobileScreen from '../Pages/MobileScreen/MobileScreen'
 
 // Lazy Imports
 const Login = React.lazy(() => import('../Pages/Login/Login').then(module => ({ default: module.default })))
@@ -31,11 +32,7 @@ export const MainRoutes = () => {
 
     switch (isMobile) {
         case true:
-            return (
-                <div>
-                    Nosso app Mobile ainda está em desevolvimento, por favor aguarde nosso time de desenvolvimento 😁
-                </div>
-            )
+            return <MobileScreen />
         default:
             return (
                 <Root>
