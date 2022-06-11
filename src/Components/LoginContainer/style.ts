@@ -1,34 +1,18 @@
 import styled, { keyframes } from 'styled-components'
 
-const bkSweep = keyframes`
-    0% {
-        background-position: 0% 0%;
-    }
-    50% {
-        background-position: 100% 100%;
-    }
-    100% {
-        background-position: 0% 0%;
-    }
-`
-
 export const All = styled.div`
-    /* display: flex;
-    flex-direction: row;
-    justify-content: center; */
     display: grid;
-    grid-template-columns: 0.8fr 1fr;
+    grid-template-columns: 1fr auto;
     height: calc(100vh - 60px);
     div.loginContainer {
-        box-shadow: 7px -7px 17px 2px rgba(0,0,0,0.79);
-        background-color: ${({ theme }) => theme.colors.background2};
+        background-color: #434a63;
         width: 100%;
         height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        color: ${({ theme }) => theme.colors.text};
+        color: #c7c7c7;
         h1 {
             font-size: 2rem;
             font-weight: bold;
@@ -43,14 +27,13 @@ export const All = styled.div`
             border-radius: 0;
             outline: none;
             margin-bottom: 10px;
-            border-bottom: 1px solid ${({ theme }) => theme.colors.black};
+            border-bottom: 1px solid #fff;
             background-color: transparent;
             text-align: center;
-            color: ${({ theme }) => theme.colors.black};
+            color: #c7c7c7;
         }
         label {
             opacity: 0.7;
-            color: ${({ theme }) => theme.colors.text_apoio};
             font-size: 0.9rem;
             width: 80%;
             text-align: left;
@@ -67,34 +50,24 @@ export const All = styled.div`
                 flex-direction: column;
                 justify-content: flex-end;
                 gap: 0.3em;
-            }
-            a.notRegistered {
-                font-size: 0.9rem;
-                border: none;
-                outline: none;
-                text-decoration: under;
-                cursor: pointer;
-                padding: none;
-                font-weight: 400;
-                margin: 0;
-                background-color: transparent;
-                & b{
-                    text-decoration: underline;
+                color: #c7c7c7;
+                a{
+                    color: #c7c7c7;
+                    font-size: 0.9rem;
+                    border: none;
+                    outline: none;
+                    text-decoration: under;
+                    cursor: pointer;
+                    padding: none;
+                    font-weight: 400;
+                    margin: 0;
+                    background-color: transparent;
+                    & b{
+                        text-decoration: underline;
+                    }
                 }
-            }
-            a.forgotPassword{
-                font-size: 0.9rem;
-                border: none;
-                text-align: right;
-                outline: none;
-                text-decoration: under;
-                cursor: pointer;
-                padding: none;
-                font-weight: 400;
-                margin: 0;
-                background-color: transparent;
-                & b{
-                    text-decoration: underline;
+                a.forgotPassword{
+                    text-align: right;
                 }
             }
             button.btn {
@@ -114,17 +87,13 @@ export const All = styled.div`
     }
 
     div.imgContainer {
-        box-shadow: inset 18px 0px 27px -16px rgba(0,0,0,0.47);
-        animation: ${bkSweep} 10s linear infinite;
-        background: linear-gradient(
-            136deg,
-            rgb(242, 113, 33, 0.5) 0%,
-            rgb(233, 64, 87, 0.5) 50%,
-            rgb(138, 35, 135) 100%
-        );
-        background-size: 400% 400%;
         width: 100%;
         height: 100%;
-        display: flex;
+        display: grid;
+        place-items: center;
+        padding: 40px;
+        img{
+            width: 70%;
+        }
     }
 `

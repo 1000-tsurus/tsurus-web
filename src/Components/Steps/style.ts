@@ -68,6 +68,8 @@ export const RegisterContainer = styled.div`
                 font-weight: 700;
                 font-size: 1.2rem;
                 font-family: 'Montserrat', sans-serif;
+                display: grid;
+                place-items: center;
                 &:disabled{
                     transition: all .2s ease-in-out;
                     opacity: .5;

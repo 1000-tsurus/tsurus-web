@@ -6,17 +6,23 @@ import * as RiIcons from 'react-icons/ri'
 import * as GiIcons from 'react-icons/gi'
 import * as yup from 'yup'
 import Steps from '@/Components/Steps/Steps'
-import { useForm } from 'react-hook-form'
-import { useLocalStorage } from '@caldwell619/react-hooks'
+import { FormProvider, useForm } from 'react-hook-form'
 import { RegisterContainer, StepContainer } from './style'
 import { Checkbox, Input, InputLabel, ListItemText, MenuItem, OutlinedInput, Select, Skeleton } from '@mui/material'
 import { api } from '@/Services/api'
-import { ThemeContext } from '@/providers/Theme'
+import { ThemeContext } from '@/providers'
 import CreateSkillModal from '@/Components/CreateSkillModal/CreateSkillModal'
 import * as FiIcons from 'react-icons/fi'
 import { toast } from 'react-toastify'
 import TextInput from '@/Components/CustomTextInput'
 import CustomCheckbox from '@/Components/CustomCheckBox'
+import { useLocalStorage } from '@/Hooks/useLocalStorage'
+import { DateTime } from 'ts-luxon'
+import { DateInput } from '@/Components/CustomDateInput'
+import { useNavigate } from 'react-router-dom'
+import { MemoizedOnlyConfirmModal, OnlyConfirmModalProps } from '@/Components/ConfirmModal/OnlyConfirmModal'
+import { CancelOrConfirmModal, CancelOrConfirmModalProps } from '@/Components/ConfirmModal/CancelOrConfirmModal'
+import { useAuth } from '@/Hooks/auth'
 
 const defaultValues: Partial<FormValues> = {
     name: '',
@@ -26,7 +32,7 @@ const defaultValues: Partial<FormValues> = {
     is_wpp: false,
     is_public: false,
     occupation: '',
-    occupation_date: '',
+    occupation_date: null,
     skills: [],
     trajectory: '',
     to_help: '',
@@ -41,7 +47,7 @@ export type FormValues = {
     is_wpp: boolean
     is_public: boolean
     occupation: string
-    occupation_date: string
+    occupation_date: string | null
     skills: {
         name: string
         id: number
@@ -64,8 +70,12 @@ const validationSchema = [
     }),
     // Step 2
     yup.object({
-        occupation: yup.string(),
-        occupation_date: yup.date(),
+        occupation: yup.string().required('Campo obrigatório'),
+        occupation_date: yup
+            .date()
+            .required('Campo obrigatório')
+            .typeError('Data inválida')
+            .max(DateTime.local().toISODate(), 'Não pode ser menor que a data atual'),
         skills: yup
             .array()
             .of(
@@ -74,6 +84,8 @@ const validationSchema = [
                     id: yup.number()
                 })
             )
+            .max(5, 'Máximo de 5 habilidades')
+            .min(1, 'Selecione pelo menos uma habilidade')
             .required('Campo obrigatório'),
         trajectory: yup.string().required('Campo obrigatório')
     }),
@@ -84,7 +96,7 @@ const validationSchema = [
     })
 ]
 
-export default function Register() {
+export const Register = () => {
     const [activeStep, setActiveStep] = useState(0),
         [skills, setSkills] = useState<
             | {
@@ -97,6 +109,7 @@ export default function Register() {
             | undefined
         >(),
         [isLoadingSkill, setIsLoadingSkill] = useState(false),
+        [isLoading, setIsLoading] = useState(false),
         [isCreateOpen, setIsCreateOpen] = useState(false),
         [phone_types, set_phone_types] = useState<{
             is_wpp: boolean
@@ -105,9 +118,30 @@ export default function Register() {
             is_wpp: false,
             is_public: false
         }),
+        { user, signIn } = useAuth(),
         { selectedTheme } = useContext(ThemeContext),
         currentValidationSchema = validationSchema[activeStep],
         [storagedForms, setStoragedForms] = useLocalStorage<any[]>('mentorRegister', []),
+        [onlyConfirmModal, setOnlyConfirmModal] = useState<OnlyConfirmModalProps>({
+            is_open: false,
+            title: '',
+            subtitle: '',
+            input_icon: '',
+            confirm_text: '',
+            onConfirm: () => {},
+            type: 'warning'
+        }),
+        [cancelOrConfirmModal, setCancelOrConfirmModal] = useState<CancelOrConfirmModalProps>({
+            is_open: false,
+            title: '',
+            subtitle: '',
+            input_icon: '',
+            confirm_text: '',
+            cancel_text: '',
+            onCancel: () => {},
+            onConfirm: () => {},
+            type: 'warning'
+        }),
         MenuProps = {
             PaperProps: {
                 style: {
@@ -128,12 +162,14 @@ export default function Register() {
             trigger,
             register,
             formState: { errors },
-            setValue
+            setValue,
+            watch
         } = methods,
+        navigator = useNavigate(),
         handleNextStep = async () => {
             const isStepValid = await trigger()
             let values = getValues()
-            console.log('🚀 ~ file: Register.tsx ~ line 399 ~ handleNextStep= ~ values', values)
+            console.log('🚀 ~ file: Register.tsx ~ line 140 ~ handleNextStep= ~ values', values)
             if (values && isStepValid) {
                 setStoragedForms([
                     {
@@ -144,22 +180,84 @@ export default function Register() {
             }
         },
         handlePrevStep = () => {
+            const formValues = getValues()
+
             setActiveStep(prevActiveStep => prevActiveStep - 1)
+
+            Object.values(formValues).forEach(value => {
+                if (value && value.length) {
+                    setStoragedForms([{ ...formValues }])
+                }
+            })
         },
         handleSelectStep = (step_id: number) => {
             setActiveStep(step_id)
         },
         onSubmit = () => {
-            console.log('submit')
+            setIsLoading(true)
+            let values = getValues()
+            values.phone = values.phone.replace('(', '').replace(')', '').replace('-', '')
+            let final_data = {
+                full_name: values.name,
+                password: values.password,
+                icon_url: 'http://cdn.onlinewebfonts.com/svg/img_173956.png',
+                email: values.email,
+                trajectory_text: values.trajectory,
+                to_help_text: values.to_help,
+                role: values.occupation,
+                employer: values.occupation,
+                skills: values.skills.map(skill => skill.id),
+                entry_date_time: values.occupation_date,
+                phone: {
+                    ddd: values.phone.split(' ')[0],
+                    phone_number: values.phone.split(' ')[1],
+                    country_code: '55',
+                    is_wpp: phone_types.is_wpp,
+                    is_public: phone_types.is_public
+                }
+            }
+            api.post('user/store', final_data)
+                .then(response => {
+                    signIn({
+                        email: values.email,
+                        password: values.password
+                    })
+                })
+                .catch(err => {
+                    console.log(err)
+                    toast.error('Erro ao se cadastrar :/', { theme: 'colored' })
+                    setIsLoading(false)
+                })
         },
         handleClearForms = () => {
-            set_phone_types({
-                is_wpp: false,
-                is_public: false
+            setCancelOrConfirmModal({
+                ...cancelOrConfirmModal,
+                is_open: true,
+                title: 'Deseja limpar todos os dados?',
+                subtitle: '',
+                input_icon: 'icon-delete',
+                confirm_text: 'Sim',
+                cancel_text: 'Não',
+                onCancel: () => {
+                    setCancelOrConfirmModal({
+                        ...cancelOrConfirmModal,
+                        is_open: false
+                    })
+                },
+                onConfirm: () => {
+                    set_phone_types({
+                        is_wpp: false,
+                        is_public: false
+                    })
+                    setStoragedForms([])
+                    reset()
+                    setActiveStep(0)
+                    setCancelOrConfirmModal({
+                        ...cancelOrConfirmModal,
+                        is_open: false
+                    })
+                }
             })
-            setStoragedForms([])
-            reset()
-            setActiveStep(0)
         }
 
     useEffect(() => {
@@ -215,17 +313,17 @@ export default function Register() {
     }, [skills])
 
     useEffect(() => {
-        console.log(storagedForms)
-        let [values] = !!storagedForms.length
-            ? storagedForms
-            : JSON.parse(localStorage.getItem('mentorRegister') || '{}')
-        console.log('🚀 ~ file: Register.tsx ~ line 491 ~ useEffect ~ values', values)
+        // Verificando se já possui dados salvos no localStorage
+        // caso existir será preenchido no formulário
+        let [values] = storagedForms
         if (values) {
             Object.keys(values).forEach((key: any) => {
-                console.log('🚀 ~ ', key, values[key])
-                // delete key.banner_url
-                if (key === 'banner_url') delete values[key]
                 setValue(key, values[key])
+            })
+
+            set_phone_types({
+                is_wpp: values.is_wpp,
+                is_public: values.is_public
             })
         }
 
@@ -241,23 +339,54 @@ export default function Register() {
         setValue('is_public', phone_types.is_public)
     }, [phone_types])
 
+    useEffect(() => {
+        setStoragedForms([
+            {
+                ...getValues()
+            }
+        ])
+    }, [watch('to_help')])
+
+    useEffect(() => {
+        if (localStorage.getItem('Tsurus@user')
+            || !(Object.keys(user).length === 0 && user.constructor === Object)
+        ){
+            setCancelOrConfirmModal({
+                ...cancelOrConfirmModal,
+                is_open: true,
+                title: 'Você já está logado',
+                confirm_text: 'Deslogar e criar outro usuário',
+                cancel_text: 'Cancelar',
+                onCancel: () => {
+                    navigator('/home', { replace: true })
+                },
+                onConfirm: () => {
+                    localStorage.clear()
+                    handleClearForms()
+                    setCancelOrConfirmModal({
+                        ...cancelOrConfirmModal,
+                        is_open: false
+                    })
+                },
+                type: 'error',
+                input_icon: 'icon-user-add'
+            })
+        }
+    }, [])
+
     const steps = [
         {
             title: 'Suas informações de cadastro',
             description: 'Preencha as informações de cadastro',
             icon: <AiIcons.AiOutlineUser />,
+            id: 0,
             isValid: false,
             content: (
                 <StepContainer>
                     <section className='user_infos'>
                         <aside className='first_left'>
                             <div className='user_infos_row'>
-                                <TextInput
-                                    label='Nome'
-                                    className='the_input'
-                                    type='text'
-                                    {...register('name')}
-                                />
+                                <TextInput {...register('name')} label='Nome' name='name' className='the_input' />
                                 {errors.name && (
                                     <div className='row_error'>
                                         <FiIcons.FiAlertCircle />
@@ -343,6 +472,7 @@ export default function Register() {
             title: 'Algumas perguntinhas',
             description: 'Preencha as informações de cadastro',
             icon: <RiIcons.RiQuestionAnswerLine />,
+            id: 1,
             isValid: false,
             content: (
                 <StepContainer>
@@ -352,6 +482,7 @@ export default function Register() {
                                 <TextInput
                                     label='Qual sua ocupação (cargo) atualmente?'
                                     className='the_input'
+                                    id='occupation'
                                     type='text'
                                     {...register('occupation')}
                                 />
@@ -363,11 +494,122 @@ export default function Register() {
                                 )}
                             </div>
                             <div className='occ_row'>
+                                <label htmlFor='name'>Quais suas principais habilidades?</label>
+                                {!isLoadingSkill && skills ? (
+                                    <>
+                                        <div className='row'>
+                                            <Select
+                                                label='Habilidades'
+                                                labelId='demo-multiple-checkbox-label'
+                                                id='demo-multiple-checkbox'
+                                                multiple
+                                                value={skills}
+                                                onChange={e => {
+                                                    let selected = skills.map(skill => {
+                                                        return {
+                                                            ...skill,
+                                                            selected: !skill.selected
+                                                                ? !!(
+                                                                      e.target.value[e.target.value.length - 1] ===
+                                                                      skill.skill_name
+                                                                  )
+                                                                : !(
+                                                                      e.target.value[e.target.value.length - 1] ===
+                                                                          skill.skill_name && skill.selected
+                                                                  )
+                                                        }
+                                                    })
+                                                    setSkills(selected)
+                                                    selected
+                                                        .filter(skill => skill.selected)
+                                                        .map(skill => {
+                                                            skill.skill_name, skill.id
+                                                        })
+                                                    // adiciona novo valor no setValue
+                                                    let new_values = selected
+                                                        .filter(skill => skill.selected)
+                                                        .map(skill => {
+                                                            return {
+                                                                id: skill.id,
+                                                                name: skill.skill_name
+                                                            }
+                                                        })
+                                                    setValue('skills', [...new_values])
+                                                }}
+                                                input={
+                                                    <Input
+                                                        style={{
+                                                            color: '#000',
+                                                            backgroundColor:
+                                                                selectedTheme.title === 'dark' ? '#000' : '#fff'
+                                                        }}
+                                                    />
+                                                }
+                                                renderValue={selected =>
+                                                    skills
+                                                        .filter(skill => skill.selected)
+                                                        .map(skill => skill.skill_name)
+                                                        .join(', ')
+                                                }
+                                                MenuProps={MenuProps}
+                                                style={{
+                                                    borderRadius: '5px',
+                                                    color: '#000',
+                                                    backgroundColor: '#fff',
+                                                    padding: '0 1rem',
+                                                    width: '75%',
+                                                    height: '40px'
+                                                }}
+                                            >
+                                                {skills.map(skill => (
+                                                    <MenuItem
+                                                        key={skill.skill_name}
+                                                        value={skill.skill_name}
+                                                        style={{ color: '#000' }}
+                                                    >
+                                                        <Checkbox checked={skill.selected} />
+                                                        <ListItemText primary={skill.skill_name} />
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                            <button
+                                                className='add_skill_button'
+                                                onClick={() => {
+                                                    setIsCreateOpen(true)
+                                                }}
+                                            >
+                                                Criar habilidade
+                                            </button>
+                                        </div>
+                                        <CreateSkillModal
+                                            onClose={() => {
+                                                setIsCreateOpen(false)
+                                            }}
+                                            isOpen={isCreateOpen}
+                                        />
+                                        {(errors.skills || !getValues().skills) && (
+                                            <div className='row_error'>
+                                                <FiIcons.FiAlertCircle />
+                                                <span className='error'>É necessário ter ao menos uma habilidade</span>
+                                            </div>
+                                        )}
+                                    </>
+                                ) : (
+                                    <Skeleton width={'80%'} height={40} animation='wave' variant='text' />
+                                )}
+                            </div>
+                        </aside>
+                        <aside className='sec_right'>
+                            <div className='date_row'>
                                 <label htmlFor='name'>Desde quando esta neste cargo?</label>
-                                <input
-                                    value={new Date(getValues().occupation_date).toLocaleDateString()}
-                                    className='the_input'
-                                    type='month'
+                                <DateInput
+                                    className='the_input date'
+                                    type='date'
+                                    max={DateTime.local().toFormat('yyyy-MM-dd')}
+                                    def_value={getValues().occupation_date || ''}
+                                    handle_value_change={e => {
+                                        setValue('occupation_date', !!e ? e : null)
+                                    }}
                                     {...register('occupation_date')}
                                 />
                                 {errors.occupation_date && (
@@ -375,114 +617,6 @@ export default function Register() {
                                         <FiIcons.FiAlertCircle />
                                         <span className='error'>{errors.occupation_date.message}</span>
                                     </div>
-                                )}
-                            </div>
-                        </aside>
-                        <aside className='sec_right'>
-                            <div className='occ_row'>
-                                <label htmlFor='name'>Quais suas principais habilidades?</label>
-                                {!isLoadingSkill && skills ? (
-                                    <>
-                                        <Select
-                                            label='Habilidades'
-                                            labelId='demo-multiple-checkbox-label'
-                                            id='demo-multiple-checkbox'
-                                            multiple
-                                            value={skills}
-                                            onChange={e => {
-                                                let selected = skills.map(skill => {
-                                                    return {
-                                                        ...skill,
-                                                        selected: !skill.selected
-                                                            ? !!(
-                                                                  e.target.value[e.target.value.length - 1] ===
-                                                                  skill.skill_name
-                                                              )
-                                                            : !(
-                                                                  e.target.value[e.target.value.length - 1] ===
-                                                                      skill.skill_name && skill.selected
-                                                              )
-                                                    }
-                                                })
-                                                setSkills(selected)
-                                                selected
-                                                    .filter(skill => skill.selected)
-                                                    .map(skill => {
-                                                        skill.skill_name, skill.id
-                                                    })
-                                                // adiciona novo valor no setValue
-                                                let new_values = selected
-                                                    .filter(skill => skill.selected)
-                                                    .map(skill => {
-                                                        return {
-                                                            id: skill.id,
-                                                            name: skill.skill_name
-                                                        }
-                                                    })
-                                                setValue('skills', [...new_values])
-                                            }}
-                                            input={
-                                                <Input
-                                                    style={{
-                                                        color: '#000',
-                                                        backgroundColor:
-                                                            selectedTheme.title === 'dark' ? '#000' : '#fff'
-                                                    }}
-                                                />
-                                            }
-                                            renderValue={selected =>
-                                                skills
-                                                    .filter(skill => skill.selected)
-                                                    .map(skill => skill.skill_name)
-                                                    .join(', ')
-                                            }
-                                            MenuProps={MenuProps}
-                                            style={{
-                                                borderRadius: '5px',
-                                                color: '#000',
-                                                backgroundColor: '#fff',
-                                                padding: '0 1rem',
-                                                width: '80%',
-                                                height: '40px'
-                                            }}
-                                        >
-                                            {skills.map(skill => (
-                                                <MenuItem
-                                                    key={skill.skill_name}
-                                                    value={skill.skill_name}
-                                                    style={{ color: '#000' }}
-                                                >
-                                                    <Checkbox checked={skill.selected} />
-                                                    <ListItemText primary={skill.skill_name} />
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                        <button
-                                            className='add_skill_button'
-                                            onClick={() => {
-                                                setIsCreateOpen(true)
-                                            }}
-                                        >
-                                            Criar nova habilidade
-                                        </button>
-                                        <CreateSkillModal
-                                            onClose={() => {
-                                                setIsCreateOpen(false)
-                                            }}
-                                            isOpen={isCreateOpen}
-                                        />
-                                        {errors.skills ||
-                                            (!getValues().skills && (
-                                                <div className='row_error'>
-                                                    <FiIcons.FiAlertCircle />
-                                                    <span className='error'>
-                                                        É necessário ter ao menos uma habilidade
-                                                    </span>
-                                                </div>
-                                            ))}
-                                    </>
-                                ) : (
-                                    <Skeleton width={'80%'} height={40} animation='wave' variant='text' />
                                 )}
                             </div>
                             <div className='occ_row'>
@@ -504,6 +638,7 @@ export default function Register() {
             title: 'Quase lá...',
             description: 'Preencha as informações de cadastro',
             icon: <GiIcons.GiFinishLine />,
+            id: 2,
             /*
                 to_help
                 icon_url
@@ -511,8 +646,22 @@ export default function Register() {
             isValid: false,
             content: (
                 <StepContainer>
-                    <section>
-                        <aside className='finish_left'></aside>
+                    <section className='final_infos'>
+                        <aside className='finish_left'>
+                            <h1>Conta pra gente...</h1>
+                            <p>
+                                Como <strong>você</strong> pode ajudar outros <strong>MEIs</strong> da cidade?
+                            </p>
+                        </aside>
+                        <aside className='finish_right'>
+                            <textarea {...register('to_help')}></textarea>
+                            {errors.to_help && (
+                                <div className='row_error'>
+                                    <FiIcons.FiAlertCircle />
+                                    <span className='error'>{errors.to_help.message}</span>
+                                </div>
+                            )}
+                        </aside>
                     </section>
                 </StepContainer>
             )
@@ -527,12 +676,15 @@ export default function Register() {
         handleClearForms,
         handleNextStep,
         handlePrevStep,
-        handleSelectStep
+        handleSelectStep,
+        isLoading
     }
 
     return (
         <RegisterContainer>
             <Steps {...step_prop} />
+            <MemoizedOnlyConfirmModal {...onlyConfirmModal}></MemoizedOnlyConfirmModal>
+            <CancelOrConfirmModal {...cancelOrConfirmModal}></CancelOrConfirmModal>
         </RegisterContainer>
     )
 }

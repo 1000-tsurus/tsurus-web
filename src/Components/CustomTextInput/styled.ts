@@ -3,14 +3,10 @@ import styled from 'styled-components'
 export const ContainerTextInput = styled.div`
     display: flex;
     flex-wrap: wrap;
-    height: 5rem;
     label.the-label {
-        font-size: 1.4rem;
         flex: 0 0 100%;
         max-width: 100%;
         padding-left: 10px;
-        padding-bottom: 5px;
-        color: ${({ theme }) => (theme.title === 'light' ? 'rgba(43, 43, 43, 0.67)' : theme.colors.black)};
         & span.optional {
             color: ${({ theme }) => theme.colors.white};
             font-size: 1.1rem;
