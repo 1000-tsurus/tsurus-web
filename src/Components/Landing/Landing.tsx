@@ -13,20 +13,27 @@ export default function Landing() {
             <div className='container'>
                 <Carousel showArrows={true} showStatus={false} showThumbs={false}>
                     <div className='carouselItem'>
-                        <div>
-                            <h2>Conheça a 1000-Tsurus</h2>
-                            <p>
-                                Projeto da secretaria do trabalho para empreendedores que desejam receber <br />
-                                mentoria gratuita e recomendada
-                            </p>
-                        </div>
-                        <img src={business_chat}></img>
+                        <aside>
+                            <h1>Conheça a 1000-Tsurus</h1>
+                            <p>Projeto da secretaria do trabalho para empreendedores que desejam receber mentoria gratuita e recomendada</p>
+                        </aside>
+                        <img src={business_chat}/>
                     </div>
                     <div className='carouselItem'>
-                        <img src={online_stats} className='' />
+                        <aside>
+                            <h1>Conheça nossos mentores!</h1>
+                            <p>Pessoas que passaram por experiências na área a qual você busca sua mentoria e que estão dispostas a lhe ajudar!</p>
+                        </aside>
+                        <img src={online_stats}/>
                     </div>
                     <div className='carouselItem'>
-                        <img src={financial_data} className='' />
+                        <aside>
+                            <Link to='/register'>
+                                <h1>Cadastre-se já!</h1>
+                            </Link>
+                            <p>Está interessado em ser mentor pela Mil Tsurus?</p>
+                        </aside>
+                        <img src={financial_data}/>
                     </div>
                 </Carousel>
             </div>

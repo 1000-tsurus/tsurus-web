@@ -6,7 +6,9 @@ import icon from '../../Assets/Logos/icon-comp.png'
 export default function Footer() {
     return (
         <All>
-            <div className='left-container'>{/* <img src={icon} alt="ícone Mil Tsurus"></img> */}</div>
+            <div className='left-container'>
+                <img src={icon} alt="ícone Mil Tsurus"></img>
+            </div>
             <div className='right-container'>
                 <p className='title'>Aplicação feita por:</p>
                 <div className='containerFooter'>

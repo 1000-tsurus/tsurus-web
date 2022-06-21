@@ -6,6 +6,7 @@ import DarkModeToggle from './DarkModeToggle'
 import { All } from './style'
 import { useAuth } from '@/Hooks/auth'
 import * as FiIcons from 'react-icons/fi'
+import icon from '@/Assets/Logos/1000_tsurus2.png'
 
 const Header = () => {
     const { user, signOut } = useAuth(),
@@ -18,7 +19,9 @@ const Header = () => {
 
     return (
         <All>
-            <div className='left'>{/* <Link to='/home'><img src={icon} /></Link> */}</div>
+            <div className='left'>
+                <Link to='/' replace={true}><img src={icon} /></Link>
+            </div>
             <div className='right'>
                 <Link to={isLogged ? '/user' : '/login'}>
                     <AiIcons.AiOutlineUser className='icon' />
