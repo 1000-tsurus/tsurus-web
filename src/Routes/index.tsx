@@ -51,7 +51,7 @@ export const MainRoutes = () => {
                                 <Route path='/forgot-password' element={<ForgotPassword />} />
                                 <Route path='/register' element={<Register />} />
                                 <Route path='/user' element={<User />} />
-                                <Route path='/user/:id' element={<User />} />
+                                <Route path='/user/:userId' element={<User />} />
                             </Routes>
                         </Suspense>
                     </div>
