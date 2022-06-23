@@ -9,6 +9,7 @@ import { useAuth } from '@/Hooks/auth'
 import { Route, Routes } from 'react-router-dom'
 import styled from 'styled-components'
 import MobileScreen from '../Pages/MobileScreen/MobileScreen'
+import { Loading } from '@/Components/Loading'
 
 // Lazy Imports
 const Login = React.lazy(() => import('../Pages/Login/Login').then(module => ({ default: module.default })))
@@ -40,11 +41,12 @@ export const MainRoutes = () => {
                     <div
                         style={{
                             marginTop: '20px',
-                            minHeight: 'calc(100vh - 60px)'
+                            minHeight: 'calc(100vh - 60px)',
                         }}
                     >
-                        <Suspense fallback={<div>Loading...</div>}>
+                        <Suspense fallback={<Loading/>}>
                             <Routes>
+                                <Route path='/loading' element={<Loading />} />
                                 <Route path='/' element={<Home />} />
                                 <Route path='/home' element={<Home />} />
                                 <Route path='/login' element={<Login />} />

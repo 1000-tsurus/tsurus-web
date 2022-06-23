@@ -3,7 +3,7 @@ import DarkModeIcon from '@mui/icons-material/Brightness3'
 import LightModeIcon from '@mui/icons-material/WbSunny'
 
 import { Ball, Checkbox, Label, MoonIcon, Root, SunIcon } from './style'
-import { ThemeContext } from '@/providers'
+import { ThemeContext } from '@/Providers'
 
 const DarkModeToggle = () => {
     const { selectedTheme, toggleTheme } = useContext(ThemeContext)

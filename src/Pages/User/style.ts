@@ -35,24 +35,65 @@ export const UserContainer = styled.div`
                     transform: scale(3) translateY(35%);
                 }
             }
+            h1{
+                color: #fff;
+            }
+            footer{
+                gap: .5rem;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                p{
+                    font-family: 'Roboto', sans-serif;
+                    color: #000;
+                    font-weight: 900;
+                    background-color: #fff;
+                    border-radius: 50px;
+                    padding: 5px;
+                }
+            }
         }
     }
-    section{
+    section.grid{
         display: grid;
         grid-template-columns: .3fr 1fr;
-        height: calc(45vw - 200px);
         min-height: calc(45vw - 200px);
         aside{
+            padding: 20px;
             height: 100%;
             background-color: ${props => props.theme.colors.background2};
-            border-radius: 0 20px 20px 0;
-            border-bottom: 1px solid ${props => props.theme.colors.white};
             h1{
-
+                font-size: 2rem;
+                margin-bottom: 1rem;
             }
             ul{
+                list-style: none;
+                gap: 3rem;
                 li{
-
+                    font-weight: 400;
+                }
+            }
+        }
+        div.body{
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            padding: 1.5rem;
+            section.text_container{
+                width: 100%;
+                padding: 1.5rem;
+                border-radius: 15px;
+                border: 1px solid ${({theme}) => theme.colors.text_apoio};
+                h1{
+                    margin-bottom: 1rem;
+                }
+                p{
+                    font-family: 'Roboto', sans-serif;
+                    padding: .5rem;
+                    border-radius: 15px;
+                    background-color: ${({theme}) => theme.colors.background2};
+                    font-weight: 400;
                 }
             }
         }
