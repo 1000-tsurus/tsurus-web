@@ -6,7 +6,7 @@ import StepLabel from '@mui/material/StepLabel'
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector'
 import { StepIconProps } from '@mui/material/StepIcon'
 import { RegisterContainer } from './style'
-import { ThemeContext } from '@/providers'
+import { ThemeContext } from '@/Providers'
 import * as FiIcons from 'react-icons/fi'
 import { CircularProgress } from '@mui/material'
 

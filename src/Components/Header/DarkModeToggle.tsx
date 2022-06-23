@@ -3,7 +3,7 @@ import DarkModeIcon from '@mui/icons-material/Brightness3'
 import LightModeIcon from '@mui/icons-material/WbSunny'
 
 import { Ball, Checkbox, Label, MoonIcon, Root, SunIcon } from './style'
-import { ThemeContext } from '@/Providers'
+import { ThemeContext, useToggleTheme } from '@/Providers'
 
 const DarkModeToggle = () => {
     const { selectedTheme, toggleTheme } = useContext(ThemeContext)
@@ -12,7 +12,7 @@ const DarkModeToggle = () => {
             <Checkbox
                 type='checkbox'
                 id='dark-mode-toggle'
-                checked={selectedTheme.title === 'dark'}
+                checked={selectedTheme?.title === 'dark'}
                 onChange={({ target: { checked } }) => {
                     const themeToSet = checked ? 'dark' : 'light'
                     toggleTheme(themeToSet)
@@ -25,7 +25,7 @@ const DarkModeToggle = () => {
                 <SunIcon>
                     <LightModeIcon color='inherit' fontSize='small' />
                 </SunIcon>
-                <Ball isChecked={selectedTheme.title === 'dark'} />
+                <Ball isChecked={selectedTheme?.title === 'dark'} />
             </Label>
         </Root>
     )

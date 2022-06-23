@@ -23,7 +23,7 @@ const Header = () => {
                 <Link to='/' replace={true}><img src={icon} /></Link>
             </div>
             <div className='right'>
-                <Link to={isLogged ? '/user' : '/login'}>
+                <Link to={isLogged ? `/user/${user.id}` : '/login'}>
                     <AiIcons.AiOutlineUser className='icon' />
                     {!isMobile && (
                         <>

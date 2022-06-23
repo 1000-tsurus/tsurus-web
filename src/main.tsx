@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import 'camsis-fonts/css/camsis-fonts.css'
 import App from './App'
 import { BrowserRouter } from 'react-router-dom'
-import { ThemeContextProvider } from '@/providers'
+import { ThemeContextProvider } from '@/Providers'
 
 ReactDOM.render(
     <StrictMode>

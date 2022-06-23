@@ -25,10 +25,12 @@ export const ThemeContextProvider = ({ children }: Props) => {
     }, [])
 
     useEffect(() => {
+        console.log("🚀 ~ file: Theme.tsx ~ line 29 ~ useEffect ~ selectedTheme.title", selectedTheme.title)
         localStorage.setItem('Tsurus@theme', selectedTheme.title)
     }, [selectedTheme])
 
     const toggleTheme = useCallback(async (theme: 'dark' | 'light') => {
+        console.log("🚀 ~ file: Theme.tsx ~ line 34 ~ toggleTheme ~ theme", theme)
         setSelectedTheme(theme === 'light' ? lightTheme : darkTheme)
     }, [])
 
