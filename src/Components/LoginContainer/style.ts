@@ -62,12 +62,10 @@ export const All = styled.div`
                     font-weight: 400;
                     margin: 0;
                     background-color: transparent;
+                    text-align: right;
                     & b{
                         text-decoration: underline;
                     }
-                }
-                a.forgotPassword{
-                    text-align: right;
                 }
             }
             button.btn {
