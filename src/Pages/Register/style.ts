@@ -57,6 +57,7 @@ export const StepContainer = styled.div`
                     padding-left: 10px;
                     margin-bottom: 15px;
                     font-weight: 700;
+                    margin-top: 15px;
                 }
                 .the_input {
                     font-family: 'Montserrat', sans-serif;
