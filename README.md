@@ -14,8 +14,8 @@
 
 ### Oque está incluso
 
-- Tema customzado
-- Utilização do tema dentro do **`styled` component**
+- Tema customizado
+- Utilização do tema dentro do **styled component**
 - Modo escuro utilizando **React Context**
 - Login e Auth
 - Scss
